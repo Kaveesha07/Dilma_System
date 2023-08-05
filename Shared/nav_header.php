@@ -15,7 +15,7 @@
                     <a class="nav-link px-2 " href="index.php">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a href="pop_add.php" class="nav-link px-2 ">POP</a>
+                    <a href="pop_view.php" class="nav-link px-2 ">POP</a>
                 </li>
                 <li class="nav-item">
                     <a href="purchaseOrder_View.php" class="nav-link px-2 ">Purchase Order</a>

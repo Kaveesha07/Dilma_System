@@ -5,10 +5,9 @@
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
     
-    $query = "SELECT *  FROM inventory";
-    $res = $dbConn->executeQuery($query);
+    //$query = "SELECT *  FROM item";
+    //$search_result = $dbConn->executeQuery($query);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,46 +21,40 @@
     <title>Dilma Operations Management System</title>
 </head>
 <body class="d-flex flex-column h-100">
-    <div>
-        <?php include('../Shared/nav_header.php')?>
-    </div>
+    <?php include('../Shared/nav_header.php')?>
     <div class="container px-5 py-4">
-        <div class="mt-4 border-bottom">
+    <div class="mt-4 border-bottom">
             <a class="nav nav-item text-decoration-none text-muted mb-2 pt-5 mt-5" href="#" onclick="history.back();">
-                    <i class="bi bi-arrow-left-square me-2"></i>Go back
+                <i class="bi bi-arrow-left-square me-2"></i>Go back
             </a>
         </div>
-        <h3 class="mt-3">Inventory Management</h3>
-        <p>Monitor and search inventory details</p>
-        <div class="d-flex">
-        <a href="Inventory_item.php" class="btn btn-sm btn-primary ">View Item Master</a>
-        </div>
-        <div class="mt-5">
-        <form class="form-floating mb-3" method="GET" action="inventory_stock.php">
+        <h3 class=" mt-3">Purchase Order Proposals</h3>
+        <p>Monitor and search purchase order proposal details</p>
+        <div>
+        <form class="form-floating mb-3" method="GET" action="pop_view.php">
                 <div class="row g-2">
-                    
-                    <div class="col-6">
-                        <input type="text" class="form-control" id="itemNo" name="itemNo" placeholder="Item Number"
-                            <?php if(isset($_GET["search"])){?>value="<?php echo $_GET["itemNo"];?>" <?php } ?>>
+                    <div class="col">
+                        <input type="text" class="form-control" id="popNo" name="popNo" placeholder="Purchase Order Proposal Number"
+                            <?php if(isset($_GET["search"])){?>value="<?php echo $_GET["popNo"];?>" <?php } ?>>
                     </div>
                     <div class="col-auto">
                         <button type="submit" name="search" class="btn btn-success">Search</button>
                         <button type="reset" class="btn btn-danger"
-                            onclick="javascript: window.location='inventory_stock.php'">Clear</button>
-                        
+                            onclick="javascript: window.location='pop_view.php'">Clear</button>
+                        <a href="pop_create.php" class="btn btn-primary">Create new POP</a>
                     </div>
                 </div>
             </form>
             </div>
   
-            <div class="pt-2" id="item-table">
+            <div class="pt-2" id="pop-table">
 
         <?php
             if(!isset($_GET["search"])){
-                $search_query = "SELECT * FROM inventory;";
+                $search_query = "SELECT * FROM pop;";
             }else{
-                $search_fn=$_GET["itemNo"];
-                $search_query = "SELECT * FROM inventory i WHERE itemNo LIKE '%{$search_fn}%';";
+                $search_fn=$_GET["popNo"];
+                $search_query = "SELECT * FROM pop i WHERE popNo LIKE '%{$search_fn}%';";
             }
             $search_result = $dbConn -> executeQuery($search_query);
             //$search_result = $dbConn->executeQuery($query);
@@ -75,35 +68,39 @@
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                     <path
                         d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                </svg><span class="ms-2 mt-2">No Items found!</span>
-                <a href="inventory_stock.php" class="text-white">Clear Search Result</a>
+                </svg><span class="ms-2 mt-2">No Purchase Order Proposal found!</span>
+                <a href="Inventory_item.php" class="text-white">Clear Search Result</a>
             </div>
         </div>
         <?php } else{ ?>
         <div class="table-responsive">
         <table class="table rounded-5 table-light table-striped table-hover align-middle caption-top mb-5">
-            <caption><?php echo $search_numrow;?> Items(s) <?php if(isset($_GET["search"])){?><br /><a
-                    href="inventory_stock.php" class="text-decoration-none text-danger">Clear Search
+            <caption><?php echo $search_numrow;?> POP(s) <?php if(isset($_GET["search"])){?><br /><a
+                    href="pop_view.php" class="text-decoration-none text-danger">Clear Search
                     Result</a><?php } ?></caption>
             <thead class="bg-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Item Number</th>
-                    <th scope="col">On Hand Stock</th>
-                    <th scope="col">Approved Stock</th>
-                    <th scope="col">Rejected Stock</th>
-                    
+                    <th scope="col">PO Proposal Number</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $i=1; while($row = $search_result -> fetch_array()){ ?>
                 <tr>
                     <th><?php echo $i++;?></th>
-                    <td><?php echo $row["itemNo"];?></td>
-                    <td><?php echo $row["onHandStock"];?></td>
-                    <td><?php echo $row["approvedStock"];?></td>
-                    <td><?php echo $row["rejectedStock"];?></td>
-                   
+                    <td><?php echo $row["popNo"];?></td>
+                    <td><?php echo $row["popDate"];?></td>
+                    <td><?php echo $row["status"];?></td>
+                    <td>
+                        <a href="admin_customer_detail.php?c_id=<?php echo $row["popNo"]?>"
+                            class="btn btn-sm btn-primary">View</a>
+                        <a href="admin_customer_delete.php?c_id=<?php echo $row["popNo"]?>"
+                            class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
+                    </td>
                 </tr>
                 <?php } ?>
             </tbody>
@@ -114,6 +111,8 @@
         ?>
         </div>
         </div>
+        
+    
+    </div>
 </body>
-
-<php ?>
+</html>

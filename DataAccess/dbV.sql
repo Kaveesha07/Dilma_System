@@ -52,4 +52,15 @@ create table purchaseorder(
     total double,
     constraint PK_POr primary key(poNo)
 );
+create table pop(
+	popNo varchar(30),
+    popDate date,
+    status varchar(30)
+);
+
+create table popItem(
+	popNo varchar(30),
+    itmNo double,
+    itmQty double
+);
 

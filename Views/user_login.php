@@ -21,6 +21,8 @@
                 <img src="assets/images/logo.png" alt="Logo.jpg" height="250 ">
             </div>
             <div class="col-4">
+            <div class="cardBox">
+                <div class="card p-3">
                 <form method="POST" action="check_login.php" class="form-floating">
                     <h2 class="mt-4 mb-3 fw-normal text-bold"><i class="bi bi-door-open me-2"></i>Log In</h2>
                     <div class="form-floating mb-2">
@@ -42,6 +44,8 @@
                         <i class="bi bi-person-plus me-2"></i>Create your new account
                     </a>
                 </form>
+                </div>
+            </div>
             </div>
         </div>
     </div>

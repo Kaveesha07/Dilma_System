@@ -20,12 +20,17 @@
                 <li class="nav-item">
                     <a href="purchaseOrder_View.php" class="nav-link px-2 ">Purchase Order</a>
                 </li>
-
+                <li class="nav-item">
+                    <a href="Inventory_GoodReceived.php" class="nav-link px-2 ">GRN</a>
+                </li>
                 <li class="nav-item">
                     <a href="inventory_stock.php" class="nav-link px-2 ">Inventory</a>
                 </li>
                 <li class="nav-item">
-                    <a href="Inventory_GoodReceived.php" class="nav-link px-2 ">GRN</a>
+                    <a href="Inventory_GoodAllocation_View.php" class="nav-link px-2 ">Good Allocation</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reports.php" class="nav-link px-2 ">Reports</a>
                 </li>
             </ul>
             <div class="d-flex">

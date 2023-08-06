@@ -4,9 +4,6 @@
     $path .= "/Dilma_System";
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
-    
-    //$query = "SELECT *  FROM purchaseorder";
-    //$res = $dbConn->executeQuery($query);
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +15,8 @@
     <link rel="stylesheet" href="../views/assets/css/styles.css">
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <link href="../vendor/twbs/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <title>Dilma Operations Management System</title>
 </head>
 <body class="d-flex flex-column h-100">
@@ -26,10 +24,12 @@
         <?php include('../Shared/nav_header.php')?>
     </div>
     <div class="container px-5 py-4">
-    <div class="mt-4 border-bottom">
-        <a class="nav nav-item text-decoration-none text-muted mb-2 pt-5 mt-5" href="#" onclick="history.back();">
-                <i class="bi bi-arrow-left-square me-2"></i>Go back
+        <div class="mt-4">
+            <a class="nav nav-item text-decoration-none text-muted mb-2 pt-5 mt-5" href="#" onclick="history.back();">
+                <i class="bi bi-arrow-left-square pe-2"></i>Go back
             </a>
+        </div>
+        <div class="mt-1 border-bottom">
         </div>
         <h3 class=" mt-3">Purchase Orders</h3>
         <p>Monitor and search purchase order details</p>
@@ -103,7 +103,7 @@
                     <td><?php echo $row["status"];?></td>
                     <td><?php echo $row["total"];?></td>
                     <td>
-                        <a href="admin_customer_detail.php?c_id=<?php echo $row["popNo"]?>"
+                        <a href="purchaseOrder_details.php?poNo=<?php echo $row["poNo"]?>"
                             class="btn btn-sm btn-primary">View</a>
                     </td>
                     </td>

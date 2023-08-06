@@ -22,6 +22,10 @@
 
     $ReadSql5 = "SELECT *  FROM purchaseorder ORDER BY date DESC LIMIT 20";
     $resPOList = $dbConn->executeQuery($ReadSql5);
+    
+    $ReadSql6 = "SELECT salesRepName FROM sales_rep ";
+    $resSalePList = $dbConn->executeQuery($ReadSql6);
+
 
 
 ?>
@@ -35,7 +39,8 @@
     <link rel="stylesheet" href="../views/assets/css/styles.css">
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <link href="../vendor/twbs/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <title>Dilma Operations Management System</title>
 
     <style>
@@ -51,7 +56,7 @@
 
 :root {
   --brown: #A52A2A;
-  --white: #fff;
+  --white: #ffffff;
   --gray: #f5f5f5;
   --black1: #222;
   --black2: #999;
@@ -154,6 +159,17 @@ body {
   color: var(--white);
   border-radius: 6px;
 }
+.salespersons .btn {
+  margin-top: 10px;
+  position: relative;
+  padding: 5px 10px;
+  background: var(--brown);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+}
+
+
 
 .details table {
   width: 100%;
@@ -178,67 +194,33 @@ body {
   padding: 10px;
 }
 
-.status.delivered {
-  padding: 2px 4px;
-  background: #8de02c;
-  color: var(--white);
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-}
-.status.pending {
-  padding: 2px 4px;
-  background: #e9b10a;
-  color: var(--white);
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-}
-.status.return {
-  padding: 2px 4px;
-  background: #f00;
-  color: var(--white);
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-}
-.status.inProgress {
-  padding: 2px 4px;
-  background: #1795ce;
-  color: var(--white);
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
 .salespersons {
   position: relative;
-  display: grid;
+  
   min-height: 500px;
   padding: 20px;
   background: var(--white);
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
 }
-.salespersons .imgBx {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  border-radius: 50px;
-  overflow: hidden;
+.salespersons table tr td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px;
 }
-.salespersons .imgBx img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.salespersons table tr{
+  color: #222;
 }
+
 .salespersons table tr td {
   padding: 4px 10px;
+  
 }
+.salespersons table tr td {
+  padding: 10px;
+}
+
 .salespersons table tr td h4 {
+  
   font-size: 16px;
   font-weight: 500;
   line-height: 1.2rem;
@@ -247,13 +229,16 @@ body {
   font-size: 14px;
   color: var(--black2);
 }
-.salespersons table tr:hover {
-  background: var(--blue);
+
+.details .salespersons table tbody tr:hover {
+  background: var(--brown);
   color: var(--white);
 }
-.salespersons table tr:hover td h4 span {
-  color: var(--white);
+
+.salespersons table tbody{
+  color: #f5f5f5;
 }
+
 
 /* ====================== Responsive Design ========================== */
 @media (max-width: 991px) {
@@ -298,18 +283,7 @@ body {
   .user {
     min-width: 40px;
   }
-  .navigation {
-    width: 100%;
-    left: -100%;
-    z-index: 1000;
-  }
-  .navigation.active {
-    width: 100%;
-    left: 0;
-  }
-  .toggle {
-    z-index: 10001;
-  }
+  
   .main.active .toggle {
     color: #fff;
     position: fixed;
@@ -327,8 +301,8 @@ body {
             <!-- ======================= Cards ================== -->
             <div class="cardBox">
             <a  href="purchaseOrder_View.php " style="text-decoration: none; color: black;" >
-                <div class="card">
-                    <div>
+                <div class="card text-center">
+                    <div class="text-center">
                         <?php
                         if (mysqli_num_rows($resPO) > 0) {
 							        $row = mysqli_fetch_assoc($resPO);
@@ -338,13 +312,13 @@ body {
                         <div class="cardName">Open Purchase Orders</div>
                     </div>
 
-                    <div class="iconBx">
-                        <ion-icon name="eye-outline"></ion-icon>
+                    <div class="iconBx mt-1">
+                      <i class="bi bi-file-earmark" style="font-size: 35px;"></i>
                     </div>
                 </div>
                 </a>
             <a  href="Inventory_item.php " style="text-decoration: none; color: black;" >
-                <div class="card">
+                <div class="card text-center">
                     <div>
                         <?php
                         if (mysqli_num_rows($resItem) > 0) {
@@ -355,13 +329,13 @@ body {
                         <div class="cardName">Items</div>
                     </div>
 
-                    <div class="iconBx">
-                        <ion-icon name="cart-outline"></ion-icon>
+                    <div class="iconBx  mt-1">
+                      <i class="bi bi-box" style="font-size: 35px;"></i>
                     </div>
                 </div>
             </a>
-            <a  href="Inventory_GoodAllocation.php " style="text-decoration: none; color: black;" >
-                <div class="card">
+            <a  href="Inventory_GoodAllocation_View.php " style="text-decoration: none; color: black;" >
+                <div class="card text-center">
                     <div>
                         <?php
                             if (mysqli_num_rows($resAllocated) > 0) {
@@ -372,13 +346,13 @@ body {
                         <div class="cardName">Allocated Goods</div>
                     </div>
 
-                    <div class="iconBx">
-                        <ion-icon name="chatbubbles-outline"></ion-icon>
+                    <div class="iconBx mt-1">
+                      <i class="bi bi-card-checklist" style="font-size: 35px;"></i>
                     </div>
                 </div>
             </a>
             <a  href="Inventory_GoodRejection.php" style="text-decoration: none; color: black;" >
-                <div class="card">
+                <div class="card text-center">
                     <div>
                         <?php
                             if (mysqli_num_rows($resAllocated) > 0) {
@@ -390,17 +364,17 @@ body {
                     </div>
             
 
-                    <div class="iconBx">
-                        <ion-icon name="cash-outline"></ion-icon>
+                    <div class="iconBx mt-1">
+                      <i class="bi bi-box-arrow-up-left" style="font-size: 35px;"></i>
                     </div>
                 </div>
             </a>
             </div>
 
 
-            <!-- ================ Order Details List ================= -->
+            <!-- ================ Purchase Order Details List ================= -->
             <div class="details">
-                <div class="recentOrders">
+                <div class="recentOrders p-5">
                     <div class="cardHeader">
                         <h2>Recent Purchase Orders</h2>
                         <a href="purchaseOrder_View.php" class="btn">View All</a>
@@ -435,23 +409,34 @@ body {
                         </tbody>
                     </table>
                 </div>
-
-                <!-- ================= New Customers ================ -->
                 <div class="salespersons">
-                    <div class="cardHeader">
+                    <div class="cardHeader mt-4 mx-2">
                         <h2>Our Sales Persons</h2>
                     </div>
-
                     <table>
-                        <tr>
-                            <td width="60px">
-                                <div class="imgBx"><img src="assets/imgs/customer02.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>David <br> <span>Italy</span></h4>
-                            </td>
-                        </tr>   
+                      <thead>
+                            <tr> 
+                                <td>Sale Person Name </td>
+                                
+                            </tr>
+                        </thead>
+                      <tbody>
+                          <?php
+                            if ($resSalePList->num_rows > 0) 
+                                {
+                                    while ($row = $resSalePList->fetch_assoc()) 
+                                    {
+                            ?> 
+                                <tr >
+                                    <td><?php echo $row["salesRepName"];?></td>
+                                </tr>
+                    
+                            <?php }
+                              } ?>
+                                  
+                        </tbody>  
                      </table>
+                        <a href="Inventory_GoodAllocation_View.php" class="btn float-right" style="text-align: center;">View All</a> 
                 </div>
             </div>
         </div>
@@ -460,9 +445,6 @@ body {
     <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>
 
-    <!-- ====== ionicons ======= -->
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>

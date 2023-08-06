@@ -16,8 +16,8 @@
         $itmDesc = $_POST["itmDesc"];
         $itmPrice = $_POST["itmPrice"];
 
-        if($itmName !=null && $itmDesc !=null && $itmPrice !=null){
-
+        if($itmName !=null && $itmDesc !=null && $itmPrice !=null)
+        {
             $insert_query = "INSERT INTO item (itmName,itmDesc,itmPrice)
             VALUES ('{$itmName}','{$itmDesc}',{$itmPrice});";
             $insert_result = $dbConn -> executeQuery($insert_query);
@@ -25,8 +25,9 @@
         else{
             $insert_result = false;
         }
-        if($insert_result){header("Inventory_item.php.php?add_fdt=1");}
-            else{header("location: Inventory_item.php.php?add_fdt=0");}
+    
+    if($insert_result){header("location: Inventory_item.php?add_fdt=1");}
+        else{header("location: Inventory_item.php?add_fdt=0");}
         exit(1);
         
     }
@@ -41,7 +42,8 @@
     <link rel="stylesheet" href="../views/assets/css/styles.css">
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <link href="../vendor/twbs/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <title>Dilma Operations Management System</title>
 </head>
 <body class="d-flex flex-column h-100">

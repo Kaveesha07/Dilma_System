@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="../views/assets/css/styles.css">
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <link href="../vendor/twbs/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <title>Dilma Operations Management System</title>
 </head>
 <body class="d-flex flex-column h-100">
@@ -40,7 +41,7 @@
         <form class="form-floating mb-3" method="GET" action="inventory_stock.php">
                 <div class="row g-2">
                     
-                    <div class="col-6">
+                    <div class="col">
                         <input type="text" class="form-control" id="itemNo" name="itemNo" placeholder="Item Number"
                             <?php if(isset($_GET["search"])){?>value="<?php echo $_GET["itemNo"];?>" <?php } ?>>
                     </div>
@@ -48,6 +49,7 @@
                         <button type="submit" name="search" class="btn btn-success">Search</button>
                         <button type="reset" class="btn btn-danger"
                             onclick="javascript: window.location='inventory_stock.php'">Clear</button>
+                        <a href="Inventory_GoodInspection_create.php" class="btn btn-primary">Make Inspection</a>
                         
                     </div>
                 </div>

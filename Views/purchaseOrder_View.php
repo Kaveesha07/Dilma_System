@@ -70,6 +70,7 @@
                 }
             ?>
         </div>
+        
         <div class="mt-3">
         <form class="form-floating mb-3" method="GET" action="purchaseOrder_View.php">
                 <div class="row g-2">

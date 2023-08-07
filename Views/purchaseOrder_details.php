@@ -4,16 +4,19 @@
     $path .= "/Dilma_System";
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
-
-    $popNo = $_GET["poNo"];
+    //$poNo="";
+    $poNo = $_GET["poNo"];
     //$pop_query = "SELECT * FROM purchaseorder WHERE popNo = '{$popNo}' Limit 1";
     //$pop_arr = $dbConn->executeQuery($pop_query);
     
     //$orh_id = $_GET["orh_id"];
-    $pop_query = "SELECT * FROM purchaseorder Where poNo='{$popNo}'";
+    $pop_query = "SELECT * FROM purchaseorder Where poNo='{$poNo}'";
     $pop_result = $dbConn->executeQuery($pop_query);
     $pop_arr = $pop_result->fetch_array();
-  
+    
+    //Get PO Items according to the po number
+    $query = "SELECT *  FROM poLines WHERE poNo='{$poNo}'";
+    $res = $dbConn->executeQuery($query);
 
     /*$pop_result = $dbConn -> executeQuery($pop_query);
     $Postatus="";
@@ -21,8 +24,12 @@
         $popNo = $row['popNo'];
         $Postatus=$row['status'];
     }*/
+    //Approve PO
+    
  
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +57,7 @@
         <div class="mt-1 border-bottom">
         </div>
         
-            <h3 class="pt-3 display-5">PO Number #<?php echo $pop_arr["popNo"];?></h3>
+            <h3 class="pt-3 display-5">PO Number #<?php echo $pop_arr["poNo"];?></h3>
             
             
         <ul class="list-unstyled fw-light">
@@ -66,8 +73,7 @@
             </li>
             </div>
             <div class="col-2">
-                <a class="btn btn-sm btn-warning mt-2 mt-md-0" href="purchaseOrder_View.php?poNo=<?php echo $_GET["poNo"]?>&cur_stage=1">Approve PO</a>
-            </div>
+            
         </ul>
         <table class="table p-3 w-25">
             <tr >
@@ -94,7 +100,15 @@
                         </tr>
                     </thead>
                     <tbody id="purchaseOrderItems">
-                        <!-- Purchase order items will be dynamically added here -->
+                    <?php $i=1; while($row = $res -> fetch_array()){ ?>
+                    <tr>
+
+                        <td><?php echo $row["itmNo"];?></td>
+                        <td></td>
+                        <td></td>
+                        <td><?php echo $row["itmQty"];?></td>
+                    </tr>
+                    <?php } ?>
                     </tbody>
                    
         </table>

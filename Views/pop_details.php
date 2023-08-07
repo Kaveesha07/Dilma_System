@@ -15,6 +15,8 @@
     $pop_arr = $pop_result->fetch_array();
   
 
+    $query = "SELECT *  FROM popLines WHERE popNo='{$popNo}'";
+    $res = $dbConn->executeQuery($query);
     /*$pop_result = $dbConn -> executeQuery($pop_query);
     $Postatus="";
     while($row = $pop_result -> fetch_array()){
@@ -24,6 +26,29 @@
 
     
  
+?>
+
+<?php
+    if(isset($_POST["add_confirm"])){
+        $UpopNo = $_POST["UpopNo"];
+        
+
+        if($UpopNo !=null)
+        {
+            $status="Closed";
+            $update_query = "UPDATE pop SET status = '{$status}' WHERE popNo = '{$UpopNo}'";
+            $update_result = $dbConn -> executeQuery($update_query);
+        }
+        else{
+            $update_result = false;
+        }
+    
+    if($update_result){header("location: pop_view.php?update_pop=1");}
+        else{header("location: pop_view.php?update_pop=0");}
+        exit(1);
+        
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +95,10 @@
             <div class="col-2">
                 <?php 
                 if($pop_arr["status"]=="Open" ){ ?>
-                <a class="btn btn-sm btn-warning mt-2 mt-md-0" href="pop_view.php?popNo=<?php echo $_GET["popNo"]?>&cur_stage=1">Approve PO</a>
+                <form method="POST" action="pop_details.php" class="form-floating" enctype="multipart/form-data">
+                <input type="hidden" name="UpopNo" value="<?php echo $popNo; ?>">
+                <button class="btn btn-warning " name="add_confirm" type="submit">Approve POP</button>
+            </form>
                 <?php } ?>
             </div>
         </ul>
@@ -94,8 +122,16 @@
                             <th>Quantity</th>
                         </tr>
                     </thead>
-                    <tbody id="purchaseOrderItems">
-                        <!-- Purchase order items will be dynamically added here -->
+                    <tbody id="pppOrderItems">
+                    <?php $i=1; while($row = $res -> fetch_array()){ ?>
+                    <tr>
+
+                        <td><?php echo $row["itmNo"];?></td>
+                        <td></td>
+                        <td></td>
+                        <td><?php echo $row["itmQty"];?></td>
+                    </tr>
+                    <?php } ?>
                     </tbody>
                    
         </table>

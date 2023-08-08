@@ -10,22 +10,42 @@
     $resItem = $dbConn->executeQuery($ReadSql);
 
     //sql query for add new POP to database
-    /*if(isset($_POST["createProposal"])){
+    if(isset($_POST["createProposal"])){
         $popDate = $_POST["popDate"];
-        $itmNo = $_POST["itmNo"];
-        $itmName = $_POST["itmName"];
-        $itmPrice = $_POST["itmPrice"];
-        $itmQty = $_POST["itmQty"];
+        $popTotal = $_POST["totalAmount"];
         $popStatus ="Open";
+        $popItemNos = $_POST["itmNo"];
+        $popItemNames = $_POST["itmName"];
+        $popItemPrices = $_POST["itmPrice"];
+        $popQtys = $_POST["itmQty"];
+        
+
     ?>
-        <h1><?php echo $popDate,$itmNo,$itmPrice?> </h1>
     <?php 
-        if($popDate !=null && $itmNo !=null && $itmName !=null  && $itmPrice !=null && $itmQty !=null)
+        if($popDate !=null && $popTotal !=null && $popItemNos!==null && $popItemNames!==null && $popItemPrices!==null && $popQtys!==null)
         {
-            $insert_query = "INSERT INTO item (itmName,itmPrice)
-            VALUES ('{$itmName}',{$itmPrice});";
+            $insert_query = "INSERT INTO pop (popDate,totalamount,status) VALUES ('$popDate',$popTotal,'$popStatus');";
             $insert_result = $dbConn -> executeQuery($insert_query);
 
+            //issue is inth order close
+            $ReadSql5 = "SELECT popNo FROM pop  ORDER BY popDate ASC LIMIT 1";
+            $resPOList = $dbConn->executeQuery($ReadSql5);
+
+            if ($resPOList->num_rows > 0) {
+                while ($r = $resPOList->fetch_assoc()) {
+                    $popNo = $r["popNo"];
+            }}
+            $i=0;
+            foreach ($popItemNos as $popItemNo){
+ 
+                $popItemName = $popItemNames[$i];
+                $popItemPrice = $popItemPrices[$i];
+                $popQty = $popQtys[$i];
+
+                $insert_query2 = "INSERT INTO poplines (popNo,itmNo,itmQty) VALUES ($popNo,$popItemNo,$popQty);";
+                $insert_result = $dbConn -> executeQuery($insert_query2);
+                $i++; 
+            }
         }
         else{
             $insert_result = false;
@@ -36,7 +56,7 @@
         {header("location: pop_view.php?add_pop=0");}
     exit(1);
         
-    }*/
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,7 +107,9 @@
                     </tbody>
                    
                 </table>
-                    <button id="createProposal" name="createProposal" class="btn btn-success mt-3 w-50" type="submit">Create Purchase Order Proposal</button>
+                        <input type="hidden" name="totalAmount" id="totalAmount">
+                        <h6 class="px-5 pt-3" style="text-align: end; " >Total (Rs.):<span name="itmTotal">0.00</span></h6>
+                        <button id="createProposal" name="createProposal" class="btn btn-success mt-3 w-50" type="submit">Create Purchase Order Proposal</button>
                 </form>
                 </div>
             </div>
@@ -117,7 +139,7 @@
 
         const addItemButton = document.getElementById('addItem');
         const purchaseOrderItems = document.getElementById('purchaseOrderItems');
-
+        let totalAmount =0;
         addItemButton.addEventListener('click', () => {
             const selectedOption = document.getElementById('item').options[document.getElementById('item').selectedIndex];
             const itmName = selectedOption.dataset.name;
@@ -125,16 +147,23 @@
             //const itemName= document.getElementById('itemNameDisplay').textContent;
             const price = document.getElementById('price').value;
             const quantity = document.getElementById('quantity').value;
+            totalAmount = totalAmount +(price * quantity);
+            updateTotalPrice(totalAmount);
 
         if (item && price && quantity) {
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
                                 <td name="itmNo">${item}</td>
+                                <input type="hidden" name="itmNo[]" value="${item}">
                                 <td name="itmName">${itmName}</td>
+                                <input type="hidden" name="itmName[]" value="${itmName}">
                                 <td name="itmPrice">${price}</td>
+                                <input type="hidden" name="itmPrice[]" value="${price}">
                                 <td name="itmQty">${quantity}</td>
+                                <input type="hidden" name="itmQty[]" value="${quantity}">
                                 <td><i class="bi bi-trash3" onclick="removeItem(this)"></i></td>
                                 `;
+        
             purchaseOrderItems.appendChild(newRow);
             // Clear input fields after adding item to proposal
             document.getElementById('item').value = '';
@@ -148,7 +177,14 @@
         row.remove();
         //<button class="btn btn-danger" onclick="removeItem(this)">Remove</button>
         }
+        function updateTotalPrice(totalAmount) {
 
+
+            // Update the total in the span with name="itmTotal"
+            document.querySelector('span[name="itmTotal"]').textContent = totalAmount.toFixed(2);
+            document.getElementById('totalAmount').value = totalAmount;
+
+        }
    
 
         //add item price according to item selected
@@ -159,7 +195,7 @@
         var selectedPrice = $(this).find(":selected").data("price");
         
         // Set the selected price in the price input box
-        $("#price").val(selectedPrice);
+        $("#price").val(selectedPrice);  
     });
 });
     

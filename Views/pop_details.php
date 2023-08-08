@@ -13,6 +13,9 @@
     $pop_query = "SELECT * FROM pop Where popNo='{$popNo}'";
     $pop_result = $dbConn->executeQuery($pop_query);
     $pop_arr = $pop_result->fetch_array();
+
+    //$ReadSql5 = "SELECT o.order_date as odate,c.name as cname,ct.qty as cqty FROM orders as o ,customer as c ,cart as ct where c.id=ct.customer_id AND c.id=o.customer_id";
+    //$res5 = $dbConn->executeQuery($ReadSql5);
   
 
     $query = "SELECT *  FROM popLines WHERE popNo='{$popNo}'";
@@ -38,12 +41,21 @@
             $status="Closed";
             $update_query = "UPDATE pop SET status = '{$status}' WHERE popNo = '{$UpopNo}'";
             $update_result = $dbConn -> executeQuery($update_query);
+
+            $poTotal =$pop_arr["totalamount"];
+            $date =date('Y-m-d');
+            $poStatus="Open";
+            $insert_query = "INSERT INTO purchaseorder (popNo,date,status,total) VALUES ($UpopNo,'$date','$popStatus',$poTotal);";
+            $insert_result = $dbConn -> executeQuery($insert_query);
+
+
         }
         else{
             $update_result = false;
+            $insert_result=false;
         }
     
-    if($update_result){header("location: pop_view.php?update_pop=1");}
+    if($update_result && $insert_result){header("location: pop_view.php?update_pop=1");}
         else{header("location: pop_view.php?update_pop=0");}
         exit(1);
         
@@ -104,11 +116,11 @@
         </ul>
         <table class="table p-3 w-25">
             <tr >
-                        <td ><b>Date :</b></td>
-                        <td><?php echo $pop_arr["popDate"];?></td>
+                        <td ><b>Date :</b>
+                      <?php echo $pop_arr["popDate"];?></td>
             </tr>
             <tr >
-                        <td ><b>Total POP :</b></td>
+                        <td ><b>Total POP :</b><?php echo "  Rs. ".$pop_arr["totalamount"];?></td>
                         <!-- <td></td>-->
             </tr>
             
@@ -127,8 +139,14 @@
                     <tr>
 
                         <td><?php echo $row["itmNo"];?></td>
-                        <td></td>
-                        <td></td>
+                        <?php 
+                        $itmNo =$row["itmNo"];
+                        $query2 = "SELECT itmName,itmPrice  FROM item WHERE itmNo='{$itmNo}'";
+                        $res2 = $dbConn->executeQuery($query2);
+                        while($r = $res2 -> fetch_array()){?>
+                        <td><?php echo $r["itmName"];?></td>
+                        <td><?php echo $r["itmPrice"];?></td>
+                        <?php }?>
                         <td><?php echo $row["itmQty"];?></td>
                     </tr>
                     <?php } ?>

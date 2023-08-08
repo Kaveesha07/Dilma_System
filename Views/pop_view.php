@@ -48,8 +48,8 @@
                         <path
                             d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
                     </svg>
-                    <span class="ms-2 mt-2">Successfully add a new item.</span>
-                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="Inventory_item.php">X</a></span>
+                    <span class="ms-2 mt-2">Successfully add a new purchase proposal.</span>
+                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="pop_view.php.">X</a></span>
                 </div>
             </div>
             <!-- END SUCCESSFULLY ADD A NEW POP -->
@@ -63,7 +63,7 @@
                         <path
                             d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                     </svg><span class="ms-2 mt-2">Failed to add a new item.</span>
-                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="Inventory_item.php">X</a></span>
+                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="pop_view.php">X</a></span>
                 </div>
             </div>
             <!-- END FAILED ADD A ITEM -->
@@ -87,7 +87,7 @@
                             d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
                     </svg>
                     <span class="ms-2 mt-2">Successfully approve the purchase order proposal.</span>
-                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="purchaseOrder_View.php">X</a></span>
+                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="pop_view.php">X</a></span>
                 </div>
             </div>
             <!-- END SUCCESSFULLY ADD A ITEM -->
@@ -101,7 +101,7 @@
                         <path
                             d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                     </svg><span class="ms-2 mt-2">Failed to approve the purchase order proposal.</span>
-                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="purchaseOrder_View.php">X</a></span>
+                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="pop_view.php">X</a></span>
                 </div>
             </div>
             <!-- END FAILED ADD A ITEM -->

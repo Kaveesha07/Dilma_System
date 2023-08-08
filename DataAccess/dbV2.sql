@@ -43,7 +43,59 @@ ALTER TABLE inventory MODIFY COLUMN poNumber INT;
 ALTER TABLE inventory MODIFY COLUMN itemNo INT;
 
 --Foreign Key allocation
+-- Foreign Key adding to purchaseorderTable
+ALTER TABLE purchaseorder
+ADD CONSTRAINT fk_popNo
+FOREIGN KEY (popNo) REFERENCES pop(popNo);
 
+-- Foreign Key adding to popLine
+ALTER TABLE poplines
+ADD CONSTRAINT fk_poplines_popNo
+FOREIGN KEY (popNo) REFERENCES pop(popNo);
+
+ALTER TABLE poplines
+ADD CONSTRAINT fk_poplines_itmNo
+FOREIGN KEY (itmNo) REFERENCES item(itmNo);
+
+-- Foreign Key adding to poLine
+ALTER TABLE polines
+ADD CONSTRAINT fk_polines_popNo
+FOREIGN KEY (popNo) REFERENCES pop(popNo);
+
+ALTER TABLE polines
+ADD CONSTRAINT fk_polines_poNo
+FOREIGN KEY (poNo) REFERENCES purchaseorder(poNo);
+
+ALTER TABLE polines
+ADD CONSTRAINT fk_polines_itmNo
+FOREIGN KEY (itmNo) REFERENCES item(itmNo);
+
+-- Foreign Key adding to inventory
+ALTER TABLE inventory
+ADD CONSTRAINT fk_inventory_itmNo
+FOREIGN KEY (itemNo) REFERENCES item(itmNo);
+
+ALTER TABLE inventory
+ADD CONSTRAINT fk_inventory_poNo
+FOREIGN KEY (poNo) REFERENCES purchaseorder(popNo);
+
+-- Foreign Key adding to allocation
+ALTER TABLE allocation
+ADD CONSTRAINT fk_allocation_itmNo
+FOREIGN KEY (itmNo) REFERENCES item(itmNo);
+
+ALTER TABLE allocation
+ADD CONSTRAINT fk_allocation_salesrep
+FOREIGN KEY (saleRepNo) REFERENCES sales_rep(saleRepNo);
+
+-- Foreign Key adding to allocation
+ALTER TABLE rejection
+ADD CONSTRAINT fk_rejection_itmNo
+FOREIGN KEY (itmNo) REFERENCES item(itmNo);
+
+ALTER TABLE rejection
+ADD CONSTRAINT fk_rejection_poNo
+FOREIGN KEY (poNo) REFERENCES purchaseorder(poNo);
 
 
 

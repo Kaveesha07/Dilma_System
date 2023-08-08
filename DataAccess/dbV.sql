@@ -64,5 +64,20 @@ create table popItem(
     itmQty double
 );
 
+create table allocation(
+	allocationNo int primary key auto_increment,
+	saleRepNo int ,
+    date  date,
+    itmNo int,
+    itmQty int
+);
+
+create table rejection(
+	rejectionNo int primary key auto_increment,
+	poNo int ,
+    date  date,
+    itmNo int,
+    itmQty int
+);
 
 

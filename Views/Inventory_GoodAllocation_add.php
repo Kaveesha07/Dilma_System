@@ -1,0 +1,157 @@
+<?php
+    //database access path
+    $path = $_SERVER['DOCUMENT_ROOT'];
+    $path .= "/Dilma_System";
+    $db_path = $path . "/DataAccess";
+    include $db_path.'/DBconnection.php';
+
+    $ReadSql = "SELECT itemNo,approvedStock FROM inventory";
+    $resItem = $dbConn->executeQuery($ReadSql);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../views/assets/css/styles.css">
+    <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <title>Dilma Operations Management System</title>
+</head>
+<body class="d-flex flex-column h-100">
+    <?php include('../Shared/nav_header.php')?>
+    <div class="container px-5 py-4">
+    <div class="mt-4 border-bottom">
+            <a class="nav nav-item text-decoration-none text-muted mb-2 pt-5 mt-5" href="#" onclick="history.back();">
+            <i class="bi bi-arrow-left-square pe-2"></i>Go back
+            </a>
+        </div >
+        <h3 class="mt-3">Good Allocation</h3>
+        <p>Make new good allocation to salesperson</p>
+        <div class="row pt-3">
+        <div class="col-md-5">
+            <div class="cardBox">
+                <div class="card p-3 pt-3">
+                <form method="POST" action="Inventory_GoodAllocation_View.php" class="form-floating" enctype="multipart/form-data">
+                    <h5 style="color:brown">New Allocation</h5>
+                    <div class="form-floating mb-2 w-50 pt-2">
+                            <input type="date" class="form-control" id="popDate" placeholder="POP Date" name="popDate" required>
+                            <label for="POPDate">Allocated Date</label>
+                    </div>
+                <h5 class="pt-4">Added Item for allocation</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Item Code</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allocatbleItems">
+                        <!-- Purchase order items will be dynamically added here -->
+                    </tbody>
+                   
+                </table>
+                    <button id="createProposal" name="createProposal" class="btn btn-success mt-3 w-50" type="submit">Allocate</button>
+                </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="cardBox">
+                <div class="card p-3 pt-3">
+                <h5 style="color:brown">Add Item to Proposal</h5>
+            <div class="input-group mb-2">
+            
+                <div>
+                    <table class="table table-borderless">
+                        <thead style="text-align: center;">
+                            <th>Allocatable Item Name</th>
+                            <th>Allocatable Quantity</th>
+                            <th>Allocating Quantity</th>
+                        </thead>
+                        <tbody>
+                            <tr class="p-3 col-2" >
+                                <td><select id="item" class="form-control ">
+                                        <?php
+                                            if ($resItem->num_rows > 0) {
+                                                while ($r = $resItem->fetch_assoc()) {
+                                            echo '<option value="' . $r['itemNo'] . '" data-quantity="'. $r['approvedStock'] . '" data-name="' . $r['itemNo'] . '">' . $r['itemNo'] . '</option>';
+
+                                            } } ?>
+                                    </select>
+                                </td>
+                                <td><input type="number" id="quantity" class="form-control" placeholder="Quantity" readonly></td>
+                                <td><input type="number" step="1" min="0.00" id="AlQuantity" class="form-control" placeholder="Quantity" required></td>
+                                <td><div class="input-group-append"></td>
+                            </tr>
+                            <tr>
+                                <td><button id="addItem" class="btn btn-primary">Add to list</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+
+        const addItemButton = document.getElementById('addItem');
+        const purchaseOrderItems = document.getElementById('allocatbleItems');
+
+        addItemButton.addEventListener('click', () => {
+            const selectedOption = document.getElementById('item').options[document.getElementById('item').selectedIndex];
+            const itmName = selectedOption.dataset.name;
+            const item = document.getElementById('item').value;
+            //const itemName= document.getElementById('itemNameDisplay').textContent;
+            const price = parseFloat(document.getElementById('quantity').value);
+            let quantity = parseFloat(document.getElementById('AlQuantity').value);
+            if (quantity>price){
+                quantity = price;
+            }
+
+        if (item && quantity && AlQuantity) {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                                <td name="itmNo">${item}</td>
+                                <td name="itmName">${itmName}</td>
+                                <td name="itmQty">${quantity}</td>
+                                <td><i class="bi bi-trash3" onclick="removeItem(this)"></i></td>
+                                `;
+            purchaseOrderItems.appendChild(newRow);
+            // Clear input fields after adding item to proposal
+            document.getElementById('item').value = '';
+            document.getElementById('quantity').value = '';
+            //document.getElementById('AlQuantity').value = '';
+        }
+        });
+
+        function removeItem(element) {
+        const row = element.closest('tr');
+        row.remove();
+        //<button class="btn btn-danger" onclick="removeItem(this)">Remove</button>
+        }
+
+   
+
+        //add item price according to item selected
+        $(document).ready(function () {
+        // Event handler for the dropdown change event
+        $("#item").change(function () {
+        // Get the selected item's price from the data attribute
+        var selectedQuantity = $(this).find(":selected").data("quantity");
+        
+        // Set the selected price in the price input box
+        $("#quantity").val(selectedQuantity);
+        $("#AlQuantity").attr("max", selectedQuantity);
+    });
+});
+    
+</script>
+</body>
+</html>

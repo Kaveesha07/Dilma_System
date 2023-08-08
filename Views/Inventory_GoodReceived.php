@@ -68,7 +68,7 @@
                             <?php 
                                 if(isset($_POST["btnSearch"])){
                                     $poNo = $_POST["poNo"];
-                                    $status="Closed";
+                                    $status="Open";
                                     $po_query = "SELECT * FROM purchaseorder Where poNo='{$poNo}' AND status='{$status}'";
                                     $po_result = $dbConn->executeQuery($po_query);
                                     $po_arr = $po_result->fetch_array();

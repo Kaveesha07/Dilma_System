@@ -11,21 +11,21 @@
         $UpoNo = $_POST["UpoNo"];
         $AdjstItemNos = $_POST["itmNo"];
         $AdjstItemNames = $_POST["itmName"];
-        $AdjstitmAdjQty = $_POST["itmAdjQty"];
+        $AdjstitmAdjQtys = $_POST["itmAdjQty"];
         $AdjstQtys = $_POST["itmQty"];
         $date =date('Y-m-d');
         $i=0;
         foreach ($AdjstItemNos as $AdjstItemNo){
             $checkAvailability = "SELECT itemNo,onHandStock FROM inventory where itemNo ='{$AdjstItemNo}'";
             $resAvailbility = $dbConn->executeQuery($checkAvailability);
-            $AdjstQty = $AdjstQtys[$i];
+            $AdjstitmAdjQty = $AdjstitmAdjQtys[$i];
            
             while($rowAvail = $resAvailbility -> fetch_array())
             {
-            $updateStock = $rowAvail['onHandStock']-$AdjstQty;
-            $update_inventory = "UPDATE inventory SET onHandStock = $updateStock,rejectedStock=$AdjstQty,approvedStock=$updateStock WHERE itemNo = $AdjstItemNo";
+            $updateStock = $rowAvail['onHandStock']-$AdjstitmAdjQty;
+            $update_inventory = "UPDATE inventory SET rejectedStock=$AdjstitmAdjQty,approvedStock=$updateStock WHERE itemNo = $AdjstItemNo";
             $update_result_inventory = $dbConn -> executeQuery($update_inventory);
-            $insert_query = "INSERT INTO rejection (poNo,date,itmNo,itmQty) VALUES ($UpoNo,'$date',$AdjstItemNo,$AdjstQty);";
+            $insert_query = "INSERT INTO rejection (poNo,date,itmNo,itmQty) VALUES ($UpoNo,'$date',$AdjstItemNo,$AdjstitmAdjQty);";
             $insert_result = $dbConn -> executeQuery($insert_query);
 
             }

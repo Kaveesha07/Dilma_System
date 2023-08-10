@@ -129,7 +129,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Item Number</th>
                     <th scope="col">On Hand Stock</th>
-                    <th scope="col">Approved Stock</th>
+                    <th scope="col">Approved Stock/Allocatble Stocks</th>
                     <th scope="col">Rejected Stock</th>
                     
                 </tr>

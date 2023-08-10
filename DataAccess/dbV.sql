@@ -80,4 +80,12 @@ create table rejection(
     itmQty int
 );
 
+create table ManagingDirector(
+	directorId int primary key auto_increment,
+	directorName varchar(50),
+    directorEmail varchar(50),
+    username varchar(50),
+    password varchar(50)
+);
+
 

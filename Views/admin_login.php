@@ -36,7 +36,7 @@
             <div class="col-4">
             <div class="cardBox">
                 <div class="card p-3">
-                <form method="POST" action="check_login.php" class="form-floating">
+                <form method="POST" action="check_admin_login.php" class="form-floating">
                     <h2 class="mt-4 mb-3 fw-normal text-bold" style="text-align: center;"><i class="bi bi-door-open me-2"></i>Sign in</h2>
                     <div class="form-floating mb-2">
                         <input type="text" class="form-control" id="floatingInput" placeholder="Username" name="username" required>
@@ -47,14 +47,8 @@
                         <label for="floatingPassword">Password</label>
                     </div>
                     <button class="w-100 btn btn-warning mb-3" type="submit">Log In</button>
-                    <a class="nav nav-item text-decoration-none text-muted mb-2 small" href="admin_login.php">
-                        <i class="bi bi-shop me-2"></i>Log in to Admin
-                    </a>
-                    <a class="nav nav-item text-decoration-none text-muted mb-2 small" href="cust_forgot_pwd.php">
-                        <i class="bi bi-key me-2"></i>Forgot your password?
-                    </a>
-                    <a class="nav nav-item text-decoration-none text-muted mb-2 small" href="cust_regist.php">
-                        <i class="bi bi-person-plus me-2"></i>Create your new account
+                    <a class="nav nav-item text-decoration-none text-muted mb-2 small" href="user_login.php">
+                        <i class="bi bi-shop me-2"></i>Log in to System Operator
                     </a>
                 </form>
                 </div>

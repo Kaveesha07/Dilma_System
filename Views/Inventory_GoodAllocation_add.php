@@ -5,54 +5,51 @@
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
 
-    $ReadSql = "SELECT itemNo,approvedStock FROM inventory";
+    $ReadSql = "SELECT i.itemNo as itemNo,i.approvedStock as approvedStock,im.itmName as itmName 
+    FROM inventory i,item im where i.itemNo = im.itmNo";
     $resItem = $dbConn->executeQuery($ReadSql);
 
     if(isset($_POST["allocate"])){
-        $popDate = $_POST["popDate"];
-        $popTotal = $_POST["totalAmount"];
-        $popStatus ="Open";
-        $popItemNos = $_POST["itmNo"];
-        $popItemNames = $_POST["itmName"];
-        $popItemPrices = $_POST["itmPrice"];
-        $popQtys = $_POST["itmQty"];
+        $aDate = $_POST["aDate"];
+        $saleRepNo = $_POST["saleRepNo"];
+        $aitmNos = $_POST["itmNo"];
+        $aitmQtys = $_POST["itmQty"];
         
 
     ?>
     <?php 
-        if($popDate !=null && $popTotal !=null && $popItemNos!==null && $popItemNames!==null && $popItemPrices!==null && $popQtys!==null)
+        if($aDate !=null && $saleRepNo !=null && $aitmNos!==null && $aitmQtys!==null )
         {
-            $insert_query = "INSERT INTO pop (popDate,totalamount,status) VALUES ('$popDate',$popTotal,'$popStatus');";
-            $insert_result = $dbConn -> executeQuery($insert_query);
-
-            //issue is inth order close
-            $ReadSql5 = "SELECT popNo FROM pop  ORDER BY popNo DESC LIMIT 1";
-            $resPOList = $dbConn->executeQuery($ReadSql5);
-
-            if ($resPOList->num_rows > 0) {
-                while ($r = $resPOList->fetch_assoc()) {
-                    $popNo = $r["popNo"];
-            }}
+            
+            
             $i=0;
-            foreach ($popItemNos as $popItemNo){
+            foreach ($aitmNos as $aitmNo){
  
-                $popItemName = $popItemNames[$i];
-                $popItemPrice = $popItemPrices[$i];
-                $popQty = $popQtys[$i];
+                $aitmQty = $aitmQtys[$i];
+                $insert_query = "INSERT INTO allocation (saleRepNo,date,itmNo,itmQty) VALUES ($saleRepNo,'$aDate',$aitmNo,$aitmQty);";
+                $insert_result = $dbConn -> executeQuery($insert_query);
 
-                $insert_query2 = "INSERT INTO poplines (popNo,itmNo,itmQty) VALUES ($popNo,$popItemNo,$popQty);";
-                $insert_result = $dbConn -> executeQuery($insert_query2);
+                $checkAvailability = "SELECT itemNo,approvedStock FROM inventory where itemNo ='{$aitmNo}' ";
+                $resAvailbility = $dbConn->executeQuery($checkAvailability);
+            
+                while($rowAvail = $resAvailbility -> fetch_array())
+                    {
+                        $updateStock = $rowAvail['approvedStock']-$aitmQty;
+                        $update_inventory = "UPDATE inventory SET approvedStock = $updateStock  WHERE itemNo = $aitmNo";
+                        $update_result_inventory = $dbConn -> executeQuery($update_inventory);
+                    }    
+                
+
                 $i++; 
             }
         }
         else{
             $insert_result = false;
         }
-    if($insert_result)
-        {header("location: pop_view.php?add_pop=1");}
-    else
-        {header("location: pop_view.php?add_pop=0");}
+    if($insert_result && $update_result_inventory){header("location: Inventory_GoodAllocation_View.php?add_allocation=1");}
+    else{header("location: Inventory_GoodAllocation_View.php?add_allocation=0");}
     exit(1);
+        
     }
 ?>
 
@@ -83,26 +80,28 @@
         <div class="col-md-5">
             <div class="cardBox">
                 <div class="card p-3 pt-3">
-                <form method="POST" action="Inventory_GoodAllocation_View.php" class="form-floating" enctype="multipart/form-data">
+                <form method="POST" action="Inventory_GoodAllocation_add.php" class="form-floating" enctype="multipart/form-data">
                     <h5 style="color:brown">New Allocation</h5>
                     <div class="form-floating mb-2 w-50 pt-2">
                         <div>
-                            <label for="POPDate">Allocated Date</label>
-                            <input type="date" class="form-control" id="popDate" placeholder="POP Date" name="popDate" required>
+                            <label for="aDate">Allocated Date</label>
+                            <input type="date" class="form-control" id="aDate" placeholder="Allocation Date" name="aDate" required>
                             
                         </div>
                         <div class="mt-2">
                             <label for="salespersonl">Select Sales Person </label>
-                            <select id="salesperson" class="form-control">
+                            <select id="salesperson" name ="saleRepNo" class="form-control">
                                 <?php
                                     $ReadSql = "SELECT saleRepNo,salesRepName FROM sales_rep";
-                                    $resItem = $dbConn->executeQuery($ReadSql);
-                                    if ($resItem->num_rows > 0) {
-                                        while ($r = $resItem->fetch_assoc()) {
+                                    $resItems = $dbConn->executeQuery($ReadSql);
+                                    if ($resItems->num_rows > 0) {
+                                        while ($r = $resItems->fetch_assoc()) {
+                                     
                                     echo '<option value="' . $r['saleRepNo'] . '" data-name="' . $r['salesRepName'] . '">' . $r['salesRepName'] . '</option>';
 
                                     } } ?>
                             </select>
+                             
                        
                         </div>
                     </div>
@@ -145,7 +144,7 @@
                                         <?php
                                             if ($resItem->num_rows > 0) {
                                                 while ($r = $resItem->fetch_assoc()) {
-                                            echo '<option value="' . $r['itemNo'] . '" data-quantity="'. $r['approvedStock'] . '" data-name="' . $r['itemNo'] . '">' . $r['itemNo'] . '</option>';
+                                            echo '<option value="' . $r['itemNo'] . '" data-quantity="'. $r['approvedStock'] . '" data-name="' . $r['itmName'] . '">' . $r['itmName'] . '</option>';
 
                                             } } ?>
                                     </select>
@@ -183,8 +182,10 @@
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
                                 <td name="itmNo">${item}</td>
+                                <input type="hidden" name="itmNo[]" value="${item}">
                                 <td name="itmName">${itmName}</td>
                                 <td name="itmQty">${quantity}</td>
+                                <input type="hidden" name="itmQty[]" value="${quantity}">
                                 <td><i class="bi bi-trash3" onclick="removeItem(this)"></i></td>
                                 `;
             purchaseOrderItems.appendChild(newRow);

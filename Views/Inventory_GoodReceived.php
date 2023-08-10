@@ -9,8 +9,37 @@
 <?php
     if(isset($_POST["add_confirm"])){
         $UpoNo = $_POST["UpoNo"];
+        $grnItemNos = $_POST["itmNo"];
+        $grnItemNames = $_POST["itmName"];
+        $grnItemPrices = $_POST["itmPrice"];
+        $grnQtys = $_POST["itmQty"];
+        $i=0;
+        foreach ($grnItemNos as $grnItemNo){
+            
+            $checkAvailability = "SELECT itemNo,onHandStock FROM inventory where itemNo ='{$grnItemNo}'";
+            $resAvailbility = $dbConn->executeQuery($checkAvailability);
+            $grnStock = $grnQtys[$i];
         
+            if($rowAvail = $resAvailbility -> fetch_array())
+            {
+                while($rowAvail = $resAvailbility -> fetch_array())
+                {
+                    $updateStock = $rowAvail['onHandStock']+$grnStock;
+                    $update_inventory = "UPDATE inventory SET onHandStock = $updateStock  WHERE itemNo = $grnItemNo";
+                    $update_result_inventory = $dbConn -> executeQuery($update_inventory);
 
+                    
+                }
+            }
+            else{
+            $insert_query = "INSERT INTO inventory (poNo,itemNo,onHandStock) VALUES ($UpoNo,$grnItemNo,$grnStock);";
+            $insert_result = $dbConn -> executeQuery($insert_query);
+            }
+        
+            $i++;
+
+         
+        }
         if($UpoNo !=null)
         {
             $status="Closed";
@@ -20,8 +49,10 @@
         else{
             $update_result = false;
         }
+
+        
     
-    if($update_result){header("location: purchaseOrder_View.php?update_po=1");}
+    if(($insert_result || $update_result_inventory) && $update_result){header("location: purchaseOrder_View.php?update_po=1");}
         else{header("location: purchaseOrder_View.php?update_po=0");}
         exit(1);
         
@@ -69,7 +100,7 @@
                                 if(isset($_POST["btnSearch"])){
                                     $poNo = $_POST["poNo"];
                                     $status="Open";
-                                    $po_query = "SELECT * FROM purchaseorder Where poNo='{$poNo}' AND status='{$status}'";
+                                    $po_query = "SELECT * FROM purchaseorder  Where poNo='{$poNo}' AND status='{$status}'";
                                     $po_result = $dbConn->executeQuery($po_query);
                                     $po_arr = $po_result->fetch_array();
 
@@ -100,7 +131,7 @@
                                                 <form method="POST" action="Inventory_GoodReceived.php" class="form-floating" enctype="multipart/form-data">
                                                 <input type="hidden" name="UpoNo" value="<?php echo $poNo; ?>">
                                                 <button class="btn btn-warning float-right w-50" name="add_confirm" type="submit">Make GRN</button>
-                                                </form>
+                                                
                                         </label>
                                     </div>
                                     </div>
@@ -120,10 +151,19 @@
                                         <tbody id="pppOrderItems">
                                         <?php $i=1; while($row = $res -> fetch_array()){ ?>
                                         <tr>
-
+                                            <input type="hidden" name="itmNo[]" value="<?php echo $row["itmNo"];?>">
                                             <td><?php echo $row["itmNo"];?></td>
-                                            <td></td>
-                                            <td></td>
+                                        <?php
+                                            $itmNo =$row["itmNo"];
+                                            $query2 = "SELECT itmName,itmPrice  FROM item WHERE itmNo=$itmNo";
+                                            $res2 = $dbConn->executeQuery($query2);
+                                            while($r = $res2 -> fetch_array()){?>
+                                                <td><?php echo $r["itmName"];?></td>
+                                                <input type="hidden" name="itmName[]" value="<?php echo $r["itmName"];?>">
+                                                <td><?php echo $r["itmPrice"];?></td>
+                                                <input type="hidden" name="itmPrice[]" value="<?php echo $r["itmPrice"];?>">
+                                        <?php }?>
+                                            <input type="hidden" name="itmQty[]" value="<?php echo $row["itmQty"];?>">
                                             <td><?php echo $row["itmQty"];?></td>
                                         </tr>
                                         <?php } ?>
@@ -145,7 +185,7 @@
                                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="purchaseOrder_View.php">X</a></span>
                                </div>
                            </div>     
-                        
+                           </form>
                             <?php }}  
                             ?>       
                             </div>

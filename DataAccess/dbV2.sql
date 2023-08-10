@@ -97,5 +97,12 @@ ALTER TABLE rejection
 ADD CONSTRAINT fk_rejection_poNo
 FOREIGN KEY (poNo) REFERENCES purchaseorder(poNo);
 
+-- Drop the old foreign key constraint
+ALTER TABLE inventory DROP FOREIGN KEY fk_inventory_poNo;
+
+-- Add a new foreign key constraint
+ALTER TABLE inventory
+ADD CONSTRAINT fk_inventory_poNo FOREIGN KEY (poNo) REFERENCES purchaseorder (poNo);
+
 
 

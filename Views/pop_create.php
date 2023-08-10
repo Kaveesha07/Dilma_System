@@ -28,7 +28,7 @@
             $insert_result = $dbConn -> executeQuery($insert_query);
 
             //issue is inth order close
-            $ReadSql5 = "SELECT popNo FROM pop  ORDER BY popDate ASC LIMIT 1";
+            $ReadSql5 = "SELECT popNo FROM pop  ORDER BY popNo DESC LIMIT 1";
             $resPOList = $dbConn->executeQuery($ReadSql5);
 
             if ($resPOList->num_rows > 0) {

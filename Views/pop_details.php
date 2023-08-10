@@ -1,39 +1,18 @@
 <?php
-    //database access path
-    $path = $_SERVER['DOCUMENT_ROOT'];
-    $path .= "/Dilma_System";
-    $db_path = $path . "/DataAccess";
-    include $db_path.'/DBconnection.php';
-
-    $popNo = $_GET["popNo"];
-    //$pop_query = "SELECT * FROM purchaseorder WHERE popNo = '{$popNo}' Limit 1";
-    //$pop_arr = $dbConn->executeQuery($pop_query);
+     $path = $_SERVER['DOCUMENT_ROOT'];
+     $path .= "/Dilma_System";
+     $db_path = $path . "/DataAccess";
+     include $db_path.'/DBconnection.php';
     
-    //$orh_id = $_GET["orh_id"];
-    $pop_query = "SELECT * FROM pop Where popNo='{$popNo}'";
-    $pop_result = $dbConn->executeQuery($pop_query);
-    $pop_arr = $pop_result->fetch_array();
-
-    //$ReadSql5 = "SELECT o.order_date as odate,c.name as cname,ct.qty as cqty FROM orders as o ,customer as c ,cart as ct where c.id=ct.customer_id AND c.id=o.customer_id";
-    //$res5 = $dbConn->executeQuery($ReadSql5);
-  
-
-    $query = "SELECT *  FROM popLines WHERE popNo='{$popNo}'";
-    $res = $dbConn->executeQuery($query);
-    /*$pop_result = $dbConn -> executeQuery($pop_query);
-    $Postatus="";
-    while($row = $pop_result -> fetch_array()){
-        $popNo = $row['popNo'];
-        $Postatus=$row['status'];
-    }*/
-
     
- 
-?>
 
-<?php
     if(isset($_POST["add_confirm"])){
         $UpopNo = $_POST["UpopNo"];
+        $poItemNos = $_POST["itmNo"];
+        $poItemNames = $_POST["itmName"];
+        $poItemPrices = $_POST["itmPrice"];
+        $poQtys = $_POST["itmQty"];
+        $totalamount = $_POST["totalamount"];
         
 
         if($UpopNo !=null)
@@ -41,12 +20,29 @@
             $status="Closed";
             $update_query = "UPDATE pop SET status = '{$status}' WHERE popNo = '{$UpopNo}'";
             $update_result = $dbConn -> executeQuery($update_query);
-
-            $poTotal =$pop_arr["totalamount"];
             $date =date('Y-m-d');
             $poStatus="Open";
-            $insert_query = "INSERT INTO purchaseorder (popNo,date,status,total) VALUES ($UpopNo,'$date','$popStatus',$poTotal);";
+            $insert_query = "INSERT INTO purchaseorder (popNo,date,status,total) VALUES ($UpopNo,'$date','$poStatus',$totalamount);";
             $insert_result = $dbConn -> executeQuery($insert_query);
+
+            $ReadSql5 = "SELECT poNo FROM purchaseorder where popNo = '{$UpopNo}'";
+            $resPOList = $dbConn->executeQuery($ReadSql5);
+
+            if ($resPOList->num_rows > 0) {
+                while ($ro = $resPOList->fetch_assoc()) {
+                    $poNo = $ro["poNo"];
+            }}
+            $i=0;
+            foreach ($poItemNos as $poItemNo){
+ 
+                $poItemName = $poItemNames[$i];
+                $poItemPrice = $poItemPrices[$i];
+                $poQty = $poQtys[$i];
+
+                $insert_query2 = "INSERT INTO polines (poNo,popNo,itmNo,itmQty) VALUES ($poNo,$UpopNo,$poItemNo,$poQty);";
+                $insert_result = $dbConn -> executeQuery($insert_query2);
+                $i++; 
+            }
 
 
         }
@@ -62,6 +58,42 @@
     }
 
 ?>
+
+<?php
+ 
+   
+    $popNo = $_GET["popNo"];
+
+    //$pop_query = "SELECT * FROM purchaseorder WHERE popNo = '{$popNo}' Limit 1";
+    //$pop_arr = $dbConn->executeQuery($pop_query);
+    
+    //$orh_id = $_GET["orh_id"];
+    //$pop_query = "SELECT * FROM pop Where popNo='{$popNo}'";
+    //$pop_result = $dbConn->executeQuery($pop_query);
+    //$pop_arr = $pop_result->fetch_array();
+
+    //$ReadSql5 = "SELECT o.order_date as odate,c.name as cname,ct.qty as cqty FROM orders as o ,customer as c ,cart as ct where c.id=ct.customer_id AND c.id=o.customer_id";
+    //$res5 = $dbConn->executeQuery($ReadSql5);
+  
+
+    $pop_query = "SELECT l.popNo as lpopNo, l.itmNo as itmNo, l.itmQty as itmQty, p.popNo as popNo, p.popDate as popDate, p.status as status,p.totalamount as totalamount
+    FROM popLines as l,pop as p WHERE l.popNo=p.popNo AND p.popNo=$popNo";
+    $pop_result = $dbConn->executeQuery($pop_query);
+    $pop_result2 = $dbConn->executeQuery($pop_query);
+    $pop_arr = $pop_result->fetch_array();
+    /*$pop_result = $dbConn -> executeQuery($pop_query);
+    $Postatus="";
+    while($row = $pop_result -> fetch_array()){
+        $popNo = $row['popNo'];
+        $Postatus=$row['status'];
+    }*/
+
+    
+ 
+?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -110,7 +142,7 @@
                 <form method="POST" action="pop_details.php" class="form-floating" enctype="multipart/form-data">
                 <input type="hidden" name="UpopNo" value="<?php echo $popNo; ?>">
                 <button class="btn btn-warning " name="add_confirm" type="submit">Approve POP</button>
-            </form>
+           
                 <?php } ?>
             </div>
         </ul>
@@ -120,6 +152,7 @@
                       <?php echo $pop_arr["popDate"];?></td>
             </tr>
             <tr >
+                        <input type="hidden" name="totalamount" value="<?php echo $pop_arr["totalamount"];?>">
                         <td ><b>Total POP :</b><?php echo "  Rs. ".$pop_arr["totalamount"];?></td>
                         <!-- <td></td>-->
             </tr>
@@ -135,21 +168,27 @@
                         </tr>
                     </thead>
                     <tbody id="pppOrderItems">
-                    <?php $i=1; while($row = $res -> fetch_array()){ ?>
+                    <?php $i=0; while($row = $pop_result2 -> fetch_array()){ ?>
                     <tr>
 
+                        <input type="hidden" name="itmNo[]" value="<?php echo $row["itmNo"];?>">
                         <td><?php echo $row["itmNo"];?></td>
                         <?php 
                         $itmNo =$row["itmNo"];
-                        $query2 = "SELECT itmName,itmPrice  FROM item WHERE itmNo='{$itmNo}'";
+                        $query2 = "SELECT itmName,itmPrice  FROM item WHERE itmNo=$itmNo";
                         $res2 = $dbConn->executeQuery($query2);
                         while($r = $res2 -> fetch_array()){?>
                         <td><?php echo $r["itmName"];?></td>
+                        <input type="hidden" name="itmName[]" value="<?php echo $r["itmName"];?>">
                         <td><?php echo $r["itmPrice"];?></td>
+                        <input type="hidden" name="itmPrice[]" value="<?php echo $r["itmPrice"];?>">
                         <?php }?>
+                        <input type="hidden" name="itmQty[]" value="<?php echo $row["itmQty"];?>">
                         <td><?php echo $row["itmQty"];?></td>
                     </tr>
                     <?php } ?>
-                    </tbody>
+               
                    
         </table>
+</body>
+</html>

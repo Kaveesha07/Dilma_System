@@ -10,9 +10,16 @@
     //$pop_arr = $dbConn->executeQuery($pop_query);
     
     //$orh_id = $_GET["orh_id"];
-    $pop_query = "SELECT * FROM purchaseorder Where poNo='{$poNo}'";
-    $pop_result = $dbConn->executeQuery($pop_query);
-    $pop_arr = $pop_result->fetch_array();
+    //$pop_query = "SELECT * FROM purchaseorder Where poNo='{$poNo}'";
+    //$pop_result = $dbConn->executeQuery($pop_query);
+    //$pop_arr = $pop_result->fetch_array();
+
+    $po_query = "SELECT l.poNo as lpopNo,l.poNo as lpopNo, l.itmNo as itmNo, l.itmQty as itmQty, p.poNo as poNo,p.popNo as popNo, p.date as pdate, p.status as status,p.total as total
+    FROM polines as l,purchaseorder as p WHERE l.poNo=p.poNo AND p.poNo=$poNo";
+
+    $po_result = $dbConn->executeQuery($po_query);
+    $po_result2 = $dbConn->executeQuery($po_query);
+    $po_arr = $po_result->fetch_array();
     
     //Get PO Items according to the po number
     $query = "SELECT *  FROM poLines WHERE poNo='{$poNo}'";
@@ -25,6 +32,7 @@
         $Postatus=$row['status'];
     }*/
     //Approve PO
+
     
  
 ?>
@@ -57,7 +65,7 @@
         <div class="mt-1 border-bottom">
         </div>
         
-            <h3 class="pt-3 display-5">PO Number #<?php echo $pop_arr["poNo"];?></h3>
+            <h3 class="pt-3 display-5">PO Number #<?php echo $po_arr["poNo"];?></h3>
             
             
         <ul class="list-unstyled fw-light">
@@ -65,9 +73,9 @@
             <div class="col-10">
             <li class="list-item mb-2">
                 <?php 
-                if($pop_arr["status"]=="Open"){ ?>
+                if($po_arr["status"]=="Open"){ ?>
                     <h5>Current Status: <span class="fw-bold badge bg-info text-dark">Open</span></h5>
-                    <?php }else if($pop_arr["status"]=="Closed" ){ ?>
+                    <?php }else if($po_arr["status"]=="Closed" ){ ?>
                 <h5>Current Status: <span class="fw-bold badge bg-warning text-dark">Closed</span></h5>
                     <?php } ?>
             </li>
@@ -78,15 +86,15 @@
         <table class="table p-3 w-25">
             <tr >
                         <td ><b>Date :</b></td>
-                        <td><?php echo $pop_arr["date"];?></td>
+                        <td><?php echo $po_arr["pdate"];?></td>
             </tr>
             <tr >
                         <td ><b>Relevant POP :</b></td>
-                        <td><?php echo $pop_arr["poNo"];?></td>
+                        <td><?php echo $po_arr["popNo"];?></td>
             </tr>
             <tr >
                         <td ><b>Total PO :</b></td>
-                        <td><?php echo "Rs ".$pop_arr["total"];?></td>
+                        <td><?php echo "Rs ".$po_arr["total"];?></td>
             </tr>
             
         </table>
@@ -100,16 +108,26 @@
                         </tr>
                     </thead>
                     <tbody id="purchaseOrderItems">
-                    <?php $i=1; while($row = $res -> fetch_array()){ ?>
+                    <?php 
+                    $i=1; while($row = $po_result2 -> fetch_array()){ ?>
                     <tr>
 
+                        <input type="hidden" name="itmNo[]" value="<?php echo $row["itmNo"];?>">
                         <td><?php echo $row["itmNo"];?></td>
-                        <td></td>
-                        <td></td>
+                        <?php 
+                        $itmNo =$row["itmNo"];
+                        $query2 = "SELECT itmName,itmPrice  FROM item WHERE itmNo=$itmNo";
+                        $res2 = $dbConn->executeQuery($query2);
+                        while($r = $res2 -> fetch_array()){?>
+                        <td><?php echo $r["itmName"];?></td>
+                        <input type="hidden" name="itmName[]" value="<?php echo $r["itmName"];?>">
+                        <td><?php echo $r["itmPrice"];?></td>
+                        <input type="hidden" name="itmPrice[]" value="<?php echo $r["itmPrice"];?>">
+                        <?php }?>
+                        <input type="hidden" name="itmQty[]" value="<?php echo $row["itmQty"];?>">
                         <td><?php echo $row["itmQty"];?></td>
                     </tr>
                     <?php } ?>
-                    </tbody>
                    
         </table>
     </div>

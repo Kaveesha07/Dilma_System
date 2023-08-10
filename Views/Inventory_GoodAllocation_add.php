@@ -7,6 +7,53 @@
 
     $ReadSql = "SELECT itemNo,approvedStock FROM inventory";
     $resItem = $dbConn->executeQuery($ReadSql);
+
+    if(isset($_POST["allocate"])){
+        $popDate = $_POST["popDate"];
+        $popTotal = $_POST["totalAmount"];
+        $popStatus ="Open";
+        $popItemNos = $_POST["itmNo"];
+        $popItemNames = $_POST["itmName"];
+        $popItemPrices = $_POST["itmPrice"];
+        $popQtys = $_POST["itmQty"];
+        
+
+    ?>
+    <?php 
+        if($popDate !=null && $popTotal !=null && $popItemNos!==null && $popItemNames!==null && $popItemPrices!==null && $popQtys!==null)
+        {
+            $insert_query = "INSERT INTO pop (popDate,totalamount,status) VALUES ('$popDate',$popTotal,'$popStatus');";
+            $insert_result = $dbConn -> executeQuery($insert_query);
+
+            //issue is inth order close
+            $ReadSql5 = "SELECT popNo FROM pop  ORDER BY popNo DESC LIMIT 1";
+            $resPOList = $dbConn->executeQuery($ReadSql5);
+
+            if ($resPOList->num_rows > 0) {
+                while ($r = $resPOList->fetch_assoc()) {
+                    $popNo = $r["popNo"];
+            }}
+            $i=0;
+            foreach ($popItemNos as $popItemNo){
+ 
+                $popItemName = $popItemNames[$i];
+                $popItemPrice = $popItemPrices[$i];
+                $popQty = $popQtys[$i];
+
+                $insert_query2 = "INSERT INTO poplines (popNo,itmNo,itmQty) VALUES ($popNo,$popItemNo,$popQty);";
+                $insert_result = $dbConn -> executeQuery($insert_query2);
+                $i++; 
+            }
+        }
+        else{
+            $insert_result = false;
+        }
+    if($insert_result)
+        {header("location: pop_view.php?add_pop=1");}
+    else
+        {header("location: pop_view.php?add_pop=0");}
+    exit(1);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -39,8 +86,25 @@
                 <form method="POST" action="Inventory_GoodAllocation_View.php" class="form-floating" enctype="multipart/form-data">
                     <h5 style="color:brown">New Allocation</h5>
                     <div class="form-floating mb-2 w-50 pt-2">
-                            <input type="date" class="form-control" id="popDate" placeholder="POP Date" name="popDate" required>
+                        <div>
                             <label for="POPDate">Allocated Date</label>
+                            <input type="date" class="form-control" id="popDate" placeholder="POP Date" name="popDate" required>
+                            
+                        </div>
+                        <div class="mt-2">
+                            <label for="salespersonl">Select Sales Person </label>
+                            <select id="salesperson" class="form-control">
+                                <?php
+                                    $ReadSql = "SELECT saleRepNo,salesRepName FROM sales_rep";
+                                    $resItem = $dbConn->executeQuery($ReadSql);
+                                    if ($resItem->num_rows > 0) {
+                                        while ($r = $resItem->fetch_assoc()) {
+                                    echo '<option value="' . $r['saleRepNo'] . '" data-name="' . $r['salesRepName'] . '">' . $r['salesRepName'] . '</option>';
+
+                                    } } ?>
+                            </select>
+                       
+                        </div>
                     </div>
                 <h5 class="pt-4">Added Item for allocation</h5>
                 <table class="table">
@@ -57,7 +121,7 @@
                     </tbody>
                    
                 </table>
-                    <button id="createProposal" name="createProposal" class="btn btn-success mt-3 w-50" type="submit">Allocate</button>
+                    <button id="allocate" name="allocate" class="btn btn-success mt-3 w-50" type="submit">Allocate</button>
                 </form>
                 </div>
             </div>

@@ -27,7 +27,6 @@
                     $updateStock = $rowAvail['onHandStock']+$grnStock;
                     $update_inventory = "UPDATE inventory SET onHandStock = $updateStock  WHERE itemNo = $grnItemNo";
                     $update_result_inventory = $dbConn -> executeQuery($update_inventory);
-
                     
                 }
             }
@@ -50,8 +49,6 @@
             $update_result = false;
         }
 
-        
-    
     if(($insert_result || $update_result_inventory) && $update_result){header("location: purchaseOrder_View.php?update_po=1");}
         else{header("location: purchaseOrder_View.php?update_po=0");}
         exit(1);

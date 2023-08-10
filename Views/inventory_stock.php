@@ -37,6 +37,43 @@
         <div class="d-flex">
         <a href="Inventory_item.php" class="btn btn-sm btn-primary ">View Item Master</a>
         </div>
+        <div class="mt-3">
+            <?php 
+            if(isset($_GET["update_inv"])){
+                if($_GET["update_inv"]==1){
+                    ?>
+            <!-- START SUCCESSFULLY ADD A ITEM -->
+            <div class="row row-cols-1 notibar">
+                <div class="col mt-2 ms-2 p-2 bg-success text-white rounded text-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-check-circle ms-2" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                            d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                    </svg>
+                    <span class="ms-2 mt-2">Successfully rejected items in the purchase order.</span>
+                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="inventory_stock.php">X</a></span>
+                </div>
+            </div>
+            <!-- END SUCCESSFULLY ADD A ITEM -->
+            <?php }else{ ?>
+            <!-- START FAILED FOOD ADD A ITEM -->
+            <div class="row row-cols-1 notibar">
+                <div class="col mt-2 ms-2 p-2 bg-danger text-white rounded text-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-x-circle ms-2" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                    </svg><span class="ms-2 mt-2">Failed to reject the items of purchase order.</span>
+                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="inventory_stock.php">X</a></span>
+                </div>
+            </div>
+            <!-- END FAILED ADD A ITEM -->
+            <?php }
+                }
+            ?>
+        </div>
         <div class="mt-5">
         <form class="form-floating mb-3" method="GET" action="inventory_stock.php">
                 <div class="row g-2">

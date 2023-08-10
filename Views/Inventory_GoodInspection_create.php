@@ -5,6 +5,40 @@
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
 ?>
+
+<?php
+    if(isset($_POST["add_confirm"])){
+        $UpoNo = $_POST["UpoNo"];
+        $AdjstItemNos = $_POST["itmNo"];
+        $AdjstItemNames = $_POST["itmName"];
+        $AdjstitmAdjQty = $_POST["itmAdjQty"];
+        $AdjstQtys = $_POST["itmQty"];
+        $date =date('Y-m-d');
+        $i=0;
+        foreach ($AdjstItemNos as $AdjstItemNo){
+            $checkAvailability = "SELECT itemNo,onHandStock FROM inventory where itemNo ='{$AdjstItemNo}'";
+            $resAvailbility = $dbConn->executeQuery($checkAvailability);
+            $AdjstQty = $AdjstQtys[$i];
+           
+            while($rowAvail = $resAvailbility -> fetch_array())
+            {
+            $updateStock = $rowAvail['onHandStock']-$AdjstQty;
+            $update_inventory = "UPDATE inventory SET onHandStock = $updateStock,rejectedStock=$AdjstQty,approvedStock=$updateStock WHERE itemNo = $AdjstItemNo";
+            $update_result_inventory = $dbConn -> executeQuery($update_inventory);
+            $insert_query = "INSERT INTO rejection (poNo,date,itmNo,itmQty) VALUES ($UpoNo,'$date',$AdjstItemNo,$AdjstQty);";
+            $insert_result = $dbConn -> executeQuery($insert_query);
+
+            }
+            $i++;
+            
+        }
+        if($update_result_inventory && $insert_result ){header("location: inventory_stock.php?update_inv=1");}
+        else{header("location: inventory_stock.php?update_inv=0");}
+        exit(1);
+        
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +52,7 @@
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <title>Dilma Operations Management System</title>
-    <title>Dilma Operations Management System</title>
+ 
 </head>
 <body class="d-flex flex-column h-100">
     <?php include('../Shared/nav_header.php')?>
@@ -34,7 +68,7 @@
               <div class="mb-4 pt-0 w-50">
                 <div class="row mt-4">
                     <div class="col-6">
-                        <input type="text" id="disabledTextInput" name="poNo" class="form-control" placeholder="Enter PO Number" required>
+                        <input type="text" id="disabledTextInput" name="poNo" class="form-control" placeholder="Enter PO Number" >
                     </div>
                     <div class="col-3">
                     <button type="submit" name="btnSearch" class="btn btn-warning ">Apply</button>
@@ -65,7 +99,7 @@
                                                 <td><?php echo $po_arr["date"];?></td>
                                         </tr>
                                         <tr >
-                                                <td ><b>GRN No :</b></td>
+                                                <td ><b>PO No :</b></td>
                                                 <td><?php echo $po_arr["poNo"];?></td>
                                         </tr>
                                     
@@ -91,12 +125,20 @@
                                         <tbody id="pppOrderItems">
                                         <?php $i=1; while($row = $res -> fetch_array()){ ?>
                                         <tr>
-
+                                            <input type="hidden" name="itmNo[]" value="<?php echo $row["itmNo"];?>">
                                             <td><?php echo $row["itmNo"];?></td>
-                                            <td></td>
+                                            <?php 
+                                                $itmNo =$row["itmNo"];
+                                                $query2 = "SELECT itmName  FROM item WHERE itmNo=$itmNo";
+                                                $res2 = $dbConn->executeQuery($query2);
+                                                while($r = $res2 -> fetch_array()){?>
+                                                    <td><?php echo $r["itmName"];?></td>
+                                                    <input type="hidden" name="itmName[]" value="<?php echo $r["itmName"];}?>">
                                             <td><?php echo $row["itmQty"];?></td>
+                                            <input type="hidden" name="itmQty[]" value="<?php echo $row["itmQty"];?>">
                                             <td>
-                                            <input type="number" step="1" min="0.00" max="<?php echo $row["itmQty"]; ?>"class="form-control" id="itmAdjQty" placeholder="" name="itmAdjQty" required>
+                                            <input type="number" step="1" min="0.00" max="<?php echo $row["itmQty"]; ?>"class="form-control" id="itmAdjQty" placeholder="" name="itmAdjQty[]" required>
+                               
                                             </td>
                                         </tr>  
                                         <?php } ?>
@@ -105,7 +147,7 @@
                                     </table>
                                         <div class="col d-flex justify-content-end">
                                                 <form method="POST" action="Inventory_GoodReceived.php" class="form-floating" enctype="multipart/form-data">
-                                                <input type="hidden" name="UpoNo" value="<?php echo $poNo; ?>">
+                                                <input type="hidden" name="UpoNo" value="<?php echo $po_arr["poNo"]; ?>">
                                                 <button class="btn btn-warning w-25" name="add_confirm" type="submit">Complete Inspection</button>
                                                 </form>
                                         </div>

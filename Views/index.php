@@ -1,5 +1,3 @@
-
-
 <?php include('../Shared/nav_header.php')?>
 <?php
     //database access path
@@ -26,8 +24,6 @@
     $ReadSql6 = "SELECT salesRepName FROM sales_rep ";
     $resSalePList = $dbConn->executeQuery($ReadSql6);
 
-
-
 ?>
 
 <!DOCTYPE html>
@@ -41,17 +37,17 @@
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>Dilma Operations Management System</title>
 
     <style>
 
-
-/* =============== Globals ============== */
 * {
 
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
 }
 
 :root {
@@ -66,6 +62,7 @@ body {
   margin-top: 20pt;
   min-height: 100vh;
   overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
 }
 
 .container {
@@ -73,7 +70,7 @@ body {
   width: 100%;
 }
 
-/* ======================= Cards ====================== */
+
 .cardBox {
   position: relative;
   width: 100%;
@@ -121,7 +118,6 @@ body {
   color: var(--white);
 }
 
-/* ================== Order Details List ============== */
 .details {
   position: relative;
   width: 100%;
@@ -129,7 +125,7 @@ body {
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-gap: 30px;
-  /* margin-top: 10px; */
+
 }
 
 .details .recentOrders {
@@ -151,25 +147,15 @@ body {
   font-weight: 600;
   color: var(--brown);
 }
-.cardHeader .btn {
-  position: relative;
-  padding: 5px 10px;
-  background: var(--brown);
-  text-decoration: none;
-  color: var(--white);
-  border-radius: 6px;
-}
+
 .salespersons .btn {
   margin-top: 10px;
   position: relative;
   padding: 5px 10px;
-  background: var(--brown);
   text-decoration: none;
-  color: var(--white);
   border-radius: 6px;
+
 }
-
-
 
 .details table {
   width: 100%;
@@ -196,7 +182,6 @@ body {
 
 .salespersons {
   position: relative;
-  
   min-height: 500px;
   padding: 20px;
   background: var(--white);
@@ -377,7 +362,7 @@ body {
                 <div class="recentOrders p-5">
                     <div class="cardHeader">
                         <h2>Recent Purchase Orders</h2>
-                        <a href="purchaseOrder_View.php" class="btn">View All</a>
+                        <a href="purchaseOrder_View.php" class="btn btn-warning">View All</a>
                     </div>
 
                     <table>
@@ -436,7 +421,7 @@ body {
                                   
                         </tbody>  
                      </table>
-                        <a href="Inventory_GoodAllocation_View.php" class="btn float-right" style="text-align: center;">View All</a> 
+                        <a href="Inventory_GoodAllocation_View.php" class="btn btn-warning float-right" style="text-align: center;">View All</a> 
                 </div>
             </div>
         </div>

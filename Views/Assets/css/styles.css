@@ -5,6 +5,7 @@ body.loginBg{
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Poppins', sans-serif;
 }
 .navbar{
     background-color: brown;
@@ -15,6 +16,7 @@ body.loginBg{
 ul.navbar-nav li.nav-item a.nav-link {
     color: white;
   }
+
 
 
 

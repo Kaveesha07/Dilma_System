@@ -69,6 +69,13 @@
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
     <title>Dilma Operations Management System</title>
 </head>
 <body class="d-flex flex-column h-100">
@@ -84,14 +91,14 @@
         <div class="row pt-3">
         <div class="col-md-6">
             <div class="cardBox">
-                <div class="card p-3 pt-3">
+                <div class="card p-3 pt-3 ">
                 <form method="POST" action="pop_create.php" class="form-floating" enctype="multipart/form-data">
-                    <h5 style="color:brown">Create New </h5>
+                    <h5 class="border-bottom" style="color:black ">Create New </h5>
                     <div class="form-floating mb-2 w-50 pt-2">
                             <input type="date" class="form-control" id="popDate" placeholder="POP Date" name="popDate" required>
                             <label for="POPDate">POP Date</label>
                     </div>
-                <h5 class="pt-4">Added Item to Purchase Proposal</h5>
+                <h6 class="pt-4 border-bottom">Added Item to Purchase Proposal</h6>
                 <table class="table">
                     <thead>
                         <tr>
@@ -109,7 +116,7 @@
                 </table>
                         <input type="hidden" name="totalAmount" id="totalAmount">
                         <h6 class="px-5 pt-3" style="text-align: end; " >Total (Rs.):<span name="itmTotal">0.00</span></h6>
-                        <button id="createProposal" name="createProposal" class="btn btn-success mt-3 w-50" type="submit">Create Purchase Order Proposal</button>
+                        <button id="createProposal" name="createProposal" class="btn btn-warning mt-3 w-50" type="submit">Create Purchase Order Proposal</button>
                 </form>
                 </div>
             </div>
@@ -118,8 +125,8 @@
         <div class="col-md-6">
             <div class="cardBox">
                 <div class="card p-3 pt-3">
-                <h5 style="color:brown">Add Item to Proposal</h5>
-            <div class="input-group mb-2">
+                <h5 class="border-bottom" style="color:black">Add Item to Proposal</h5>
+            <div class="input-group mb-2 mt-4">
             <select id="item" class="form-control">
                 <?php
 					if ($resItem->num_rows > 0) {

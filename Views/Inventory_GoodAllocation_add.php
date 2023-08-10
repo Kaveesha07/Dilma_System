@@ -65,6 +65,13 @@
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <title>Dilma Operations Management System</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
 </head>
 <body class="d-flex flex-column h-100">
     <?php include('../Shared/nav_header.php')?>
@@ -81,7 +88,7 @@
             <div class="cardBox">
                 <div class="card p-3 pt-3">
                 <form method="POST" action="Inventory_GoodAllocation_add.php" class="form-floating" enctype="multipart/form-data">
-                    <h5 style="color:brown">New Allocation</h5>
+                    <h5 class="border-bottom" style="color:black">New Allocation</h5>
                     <div class="form-floating mb-2 w-50 pt-2">
                         <div>
                             <label for="aDate">Allocated Date</label>
@@ -105,7 +112,7 @@
                        
                         </div>
                     </div>
-                <h5 class="pt-4">Added Item for allocation</h5>
+                <h6 class="pt-4 border-bottom">Added Item for allocation</h6>
                 <table class="table">
                     <thead>
                         <tr>
@@ -125,16 +132,16 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-7 ">
             <div class="cardBox">
                 <div class="card p-3 pt-3">
-                <h5 style="color:brown">Add Item to Proposal</h5>
+                <h5 class="border-bottom" style="color:black">Add Item to Proposal</h5>
             <div class="input-group mb-2">
             
                 <div>
                     <table class="table table-borderless">
                         <thead style="text-align: center;">
-                            <th>Allocatable Item Name</th>
+                            <th>Item Name</th>
                             <th>Allocatable Quantity</th>
                             <th>Allocating Quantity</th>
                         </thead>

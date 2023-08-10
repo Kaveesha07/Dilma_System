@@ -51,6 +51,13 @@
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
     <title>Dilma Operations Management System</title>
  
 </head>

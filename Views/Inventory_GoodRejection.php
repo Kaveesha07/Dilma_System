@@ -5,7 +5,8 @@
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
     
-    $query = "SELECT *  FROM inventory where rejectedStock>0";
+    $query = "SELECT i.itemNo as itemNo,i.rejectedStock as rejectedStock,im.itmName as itmName,i.poNo as poNo  
+    FROM inventory i,item as im where im.itmNo=i.itemNo AND rejectedStock>0";
     $res = $dbConn->executeQuery($query);
 ?>
 
@@ -21,6 +22,13 @@
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <title>Dilma Operations Management System</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
 </head>
 <body class="d-flex flex-column h-100">
     <div>
@@ -40,9 +48,12 @@
             <caption></caption>
             <thead class="bg-light">
                 <tr>
+   
+                    <th scope="col">PO No</th>
                     <th scope="col">Item Number</th>
+                    <th scope="col">Item Name</th>
                     <th scope="col">Rejected Quantity</th>
-                    <th scope="col">Actions</th>
+                
                 </tr>
             </thead>
             <tbody>
@@ -53,14 +64,12 @@
                     {
 				?> 
                 <tr>
+  
+                    <td><?php echo $row["poNo"];?></td>
                     <td><?php echo $row["itemNo"];?></td>
+                    <td><?php echo $row["itmName"];?></td>
                     <td><?php echo $row["rejectedStock"];?></td>
-                    <td>
-                        <a href="admin_customer_detail.php?c_id=<?php echo $row["itemNo"]?>"
-                            class="btn btn-sm btn-primary">View</a>
-                        <a href="admin_customer_delete.php?c_id=<?php echo $row["itemNo"]?>"
-                            class="btn btn-sm btn-outline-danger">Delete</a>
-                    </td>
+                 
                 </tr>
                 <?php }
 				} ?>

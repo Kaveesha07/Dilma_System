@@ -20,23 +20,20 @@
             $resAvailbility = $dbConn->executeQuery($checkAvailability);
             $grnStock = $grnQtys[$i];
         
-            if($rowAvail = $resAvailbility -> fetch_array())
+            if(true)
             {
                 while($rowAvail = $resAvailbility -> fetch_array())
                 {
                     $updateStock = $rowAvail['onHandStock']+$grnStock;
                     $update_inventory = "UPDATE inventory SET onHandStock = $updateStock  WHERE itemNo = $grnItemNo";
-                    $update_result_inventory = $dbConn -> executeQuery($update_inventory);
-                    
+                    $update_result_inventory = $dbConn -> executeQuery($update_inventory);   
                 }
             }
             else{
             $insert_query = "INSERT INTO inventory (poNo,itemNo,onHandStock) VALUES ($UpoNo,$grnItemNo,$grnStock);";
             $insert_result = $dbConn -> executeQuery($insert_query);
             }
-        
             $i++;
-
          
         }
         if($UpoNo !=null)
@@ -70,6 +67,13 @@
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
     <title>Dilma Operations Management System</title>
 </head>
 <body class="d-flex flex-column h-100">

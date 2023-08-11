@@ -1,6 +1,6 @@
 
 <header class="navbar  navbar-expand-md fixed-top shadow-sm mb-auto">
-    <div class="container-fluid mx-3">
+    <div class="container-fluid mx-3" >
         <a href="index.php">
             <img src="../views/assets/images/logo.png" width="100" class="me-3 ms-5" alt="Logo">
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
@@ -29,9 +29,9 @@
                 <li class="nav-item px-2">
                     <a href="Inventory_GoodAllocation_View.php" class="nav-link px-2 "><i class="bi bi-card-checklist px-2"></i>Good Allocation</a>
                 </li>
-                <li class="nav-item px-2">
+                <!--<li class="nav-item px-2">
                     <a href="reports.php" class="nav-link px-2 ">Reports</a>
-                </li>
+                </li>-->
             </ul>
             <div class="d-flex">
                 <?php if(!isset($_SESSION['cid'])){ ?>

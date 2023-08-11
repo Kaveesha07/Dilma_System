@@ -130,7 +130,7 @@
                     <th scope="col">Allocated Date</th>
                     <th scope="col">Item Name</th>
                     <th scope="col">Allocated Quantity</th>
-                    <th scope="col">Actions</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -141,10 +141,7 @@
                     <td><?php echo $row["date"];?></td>
                     <td><?php echo $row["itmName"];?></td>
                     <td><?php echo $row["itmQty"];?></td>
-                    <td>
-                        <a href="admin_customer_detail.php?c_id=<?php echo $row["salesRepName"]?>"
-                            class="btn btn-sm btn-primary">View</a>
-                    </td>
+                    
                     </td>
                 </tr>
                 <?php } ?>
@@ -159,5 +156,8 @@
         
     
     </div>
+    <div class="flex pt-5 mt-5">
+    <?php include('../Shared/footer.php')?>
+  </div>
 </body>
 </html>

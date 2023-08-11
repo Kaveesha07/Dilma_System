@@ -12,10 +12,10 @@
     $ReadSql2 = "SELECT count(*) as count FROM item";
     $resItem = $dbConn->executeQuery($ReadSql2);
 
-    $ReadSql3 = "SELECT count(*) as count FROM inventory where approvedStock>0";
+    $ReadSql3 = "SELECT sum(itmQty) as count FROM allocation where itmQty>0";
     $resAllocated = $dbConn->executeQuery($ReadSql3);
 
-    $ReadSql4 = "SELECT count(*) as count FROM inventory where rejectedStock>0";
+    $ReadSql4 = "SELECT sum(rejectedStock) as count FROM inventory where rejectedStock>0";
     $resRejected = $dbConn->executeQuery($ReadSql4);
 
     $ReadSql5 = "SELECT *  FROM purchaseorder ORDER BY date DESC LIMIT 20";
@@ -279,9 +279,9 @@ body {
 }
     </style>
 </head>
-<body class="container mt-5">
+<body >
    
-           
+<div class="container mt-5">     
     <div class="pt-5">
             <!-- ======================= Cards ================== -->
             <div class="cardBox">
@@ -426,11 +426,14 @@ body {
             </div>
         </div>
     </div>
+</body>
     
     <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>
+  <div class="flex">
+    <?php include('../Shared/footer.php')?>
+  </div>
 
-</body>
 
 </html>
 </body>

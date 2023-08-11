@@ -197,5 +197,9 @@
                
                    
         </table>
+    </div>
+    <div class="flex mt-5">
+    <?php include('../Shared/footer.php')?>
+  </div>
 </body>
 </html>

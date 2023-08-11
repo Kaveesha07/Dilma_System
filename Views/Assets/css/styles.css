@@ -18,6 +18,12 @@ ul.navbar-nav li.nav-item a.nav-link {
   }
 
 
+.bg-brown {
+    background-color: rgb(134, 25, 25);/* Use the brown color you prefer */
+    background-image: linear-gradient(149deg, rgba(53,20,20,1) 11%, rgba(84,1,9,1) 47%, rgba(131,3,24,1) 100%);
+}
+
+
 
 
 

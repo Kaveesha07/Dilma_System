@@ -26,7 +26,8 @@
     </style>
     <title>Dilma Operations Management System</title>
 </head>
-<body class="d-flex flex-column h-100">
+<body >
+<div class="d-flex flex-column h-100">
     <div>
         <?php include('../Shared/nav_header.php')?>
     </div>
@@ -165,6 +166,9 @@
         
     
     </div>
+    <div class="flex">
+    <?php include('../Shared/footer.php')?>
+  </div>
 </body>
 
 <php ?>

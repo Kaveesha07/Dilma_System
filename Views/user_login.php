@@ -53,7 +53,7 @@
                     <a class="nav nav-item text-decoration-none text-muted mb-2 small" href="cust_forgot_pwd.php">
                         <i class="bi bi-key me-2"></i>Forgot your password?
                     </a>
-                    <a class="nav nav-item text-decoration-none text-muted mb-2 small" href="cust_regist.php">
+                    <a class="nav nav-item text-decoration-none text-muted mb-2 small" href="user_registration.php">
                         <i class="bi bi-person-plus me-2"></i>Create your new account
                     </a>
                 </form>

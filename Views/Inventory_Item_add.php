@@ -87,4 +87,9 @@
         </form>
     </div>
     </div>
+    <div class="flex pt-5 mt-5">
+    <?php include('../Shared/footer.php')?>
+  </div>
+</body>
+</html>
     

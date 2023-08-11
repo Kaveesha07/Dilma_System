@@ -30,7 +30,8 @@
     <title>Dilma Operations Management System</title>
 
 </head>
-<body class="d-flex flex-column h-100">
+<body >
+<div class="d-flex flex-column h-100">
     <?php include('../Shared/nav_header.php')?>
     <div class="container px-5 py-4">
     <div class="mt-4 border-bottom">
@@ -132,7 +133,7 @@
                                 d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
                         </svg>
                         <span class="ms-2 mt-2">Successfully removed purchase proposal.</span>
-                        <span class="me-2 float-end"><a class="text-decoration-none link-light" href="Inventory_item.php">X</a></span>
+                        <span class="me-2 float-end"><a class="text-decoration-none link-light" href="pop_view.php">X</a></span>
                     </div>
                 </div>
                 <!-- END SUCCESSFULLY DELETE Item -->
@@ -146,10 +147,10 @@
                             <path
                                 d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                         </svg><span class="ms-2 mt-2">Failed to removed purchase proposal.</span>
-                        <span class="me-2 float-end"><a class="text-decoration-none link-light" href="Inventory_item.php">X</a></span>
+                        <span class="me-2 float-end"><a class="text-decoration-none link-light" href="pop_view.php">X</a></span>
                     </div>
                 </div>
-            </div>
+           
                 <?php }
                 }?>
         </div>
@@ -173,10 +174,10 @@
 
         <?php
             if(!isset($_GET["search"])){
-                $search_query = "SELECT * FROM pop;";
+                $search_query = "SELECT * FROM pop Where status != 'Inactive';";
             }else{
                 $search_fn=$_GET["popNo"];
-                $search_query = "SELECT * FROM pop i WHERE popNo LIKE '%{$search_fn}%';";
+                $search_query = "SELECT * FROM pop i WHERE popNo LIKE '%{$search_fn}%' AND status != 'Inactive';";
             }
             $search_result = $dbConn -> executeQuery($search_query);
             //$search_result = $dbConn->executeQuery($query);
@@ -219,8 +220,12 @@
                     <td>
                         <a href="pop_details.php?popNo=<?php echo $row["popNo"]?>"
                             class="btn btn-sm btn-primary">View</a>
+                        
                         <a href="pop_delete.php?popNo=<?php echo $row["popNo"]?>"
+                        <?php 
+                            if($row["status"]=="Open" ){ ?>
                             class="btn btn-sm btn-outline-danger">Delete</a>
+                        <?php }?>
                     </td>
                     </td>
                 </tr>
@@ -236,5 +241,8 @@
         
     
     </div>
+    <div class="flex">
+    <?php include('../Shared/footer.php')?>
+  </div>
 </body>
 </html>

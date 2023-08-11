@@ -16,14 +16,15 @@
         $date =date('Y-m-d');
         $i=0;
         foreach ($AdjstItemNos as $AdjstItemNo){
-            $checkAvailability = "SELECT itemNo,onHandStock FROM inventory where itemNo ='{$AdjstItemNo}'";
+            $checkAvailability = "SELECT itemNo,onHandStock,rejectedStock FROM inventory where itemNo ='{$AdjstItemNo}'";
             $resAvailbility = $dbConn->executeQuery($checkAvailability);
             $AdjstitmAdjQty = $AdjstitmAdjQtys[$i];
            
             while($rowAvail = $resAvailbility -> fetch_array())
             {
             $updateStock = $rowAvail['onHandStock']-$AdjstitmAdjQty;
-            $update_inventory = "UPDATE inventory SET rejectedStock=$AdjstitmAdjQty,approvedStock=$updateStock WHERE itemNo = $AdjstItemNo";
+            $updateRejectedStock = $rowAvail['onRejectedStock']+$AdjstitmAdjQty;
+            $update_inventory = "UPDATE inventory SET rejectedStock=$updateRejectedStock,approvedStock=$updateStock WHERE itemNo = $AdjstItemNo";
             $update_result_inventory = $dbConn -> executeQuery($update_inventory);
             $insert_query = "INSERT INTO rejection (poNo,date,itmNo,itmQty) VALUES ($UpoNo,'$date',$AdjstItemNo,$AdjstitmAdjQty);";
             $insert_result = $dbConn -> executeQuery($insert_query);

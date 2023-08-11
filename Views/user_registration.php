@@ -36,10 +36,43 @@
         <a class="nav nav-item text-decoration-none text-muted mb-2 pt-5 mt-5" href="#" onclick="history.back();">
             <i class="bi bi-arrow-left-square me-2"></i>Go back
         </a>
+        <div >
+            <?php 
+            if(isset($_GET["reg_up"])){
+                if($_GET["reg_up"]==1){
+                    ?>
+            <div class="row row-cols-1 notibar">
+                <div class="col mt-2 ms-2 p-2 bg-success text-white rounded text-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-check-circle ms-2" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                            d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                    </svg>
+                    <span class="ms-2 mt-2">Successfully created your account.<a class="text-decoration-none link-light" href="user_login.php"> Click here to Login.</a></span>
+                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="user_registration.php">X</a></span>
+                </div>
+            </div>
+            <?php }else{ ?>
+            <div class="row row-cols-1 notibar">
+                <div class="col mt-2 ms-2 p-2 bg-danger text-white rounded text-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-x-circle ms-2" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                    </svg><span class="ms-2 mt-2">Failed to created your account.<a class="text-decoration-none link-light" href="user_login.php"> Click here to Login</a></span>
+                    <span class="me-2 float-end"><a class="text-decoration-none link-light" href="user_registration.php">X</a></span>
+                </div>
+            </div>
+            <?php }
+                }
+            ?>
+        </div>
         <div class="cardBox">
         <div class="card text-center ">
         <div class="container form-signin mt-auto w-50">
-        <form method="POST" action="add_cust.php" class="form-signin " >
+        <form method="POST" action="user_registration_accept.php" class="form-signin " >
             <h2 class="mt-4 mb-3 fw-normal text-bold"><i class="bi bi-person-plus me-2"></i>Sign Up</h2>
             <div class="form-floating mb-2">
                 <input type="text" class="form-control" id="username" placeholder="Username" name="username"
@@ -60,7 +93,7 @@
                 </div>
             </div>
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="firstname" placeholder="Operator Full Name" name="fullname"
+                <input type="text" class="form-control" id="fullname" placeholder="Operator Full Name" name="fullname"
                     required>
                 <label for="firstname">Operator Full Name</label>
             </div>

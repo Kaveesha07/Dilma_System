@@ -104,5 +104,7 @@ ALTER TABLE inventory DROP FOREIGN KEY fk_inventory_poNo;
 ALTER TABLE inventory
 ADD CONSTRAINT fk_inventory_poNo FOREIGN KEY (poNo) REFERENCES purchaseorder (poNo);
 
+ALTER TABLE item add column status varchar(40);
+
 
 

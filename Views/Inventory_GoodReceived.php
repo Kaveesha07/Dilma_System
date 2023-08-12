@@ -20,7 +20,7 @@
             $resAvailbility = $dbConn->executeQuery($checkAvailability);
             $grnStock = $grnQtys[$i];
         
-            if(true)
+            if($rowAvail = $resAvailbility -> fetch_array())
             {
                 while($rowAvail = $resAvailbility -> fetch_array())
                 {
@@ -91,7 +91,7 @@
                     <div class="row mt-4">
                         <div class="d-flex col-6">
                             <input type="text" id="disabledTextInput" name="poNo" class="form-control " placeholder="Enter PO Number" >
-                            <button type="submit" name="btnSearch" class="btn btn-success mx-3">Apply</button>
+                            <button type="submit" name="btnSearch" class="btn btn-warning mx-3">Apply</button>
                         </div>
                     </div>
                 </div>

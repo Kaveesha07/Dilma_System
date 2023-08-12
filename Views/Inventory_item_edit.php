@@ -5,34 +5,33 @@
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
 
-    /*$query = "SELECT itmNo FROM item ORDER BY itmNo DESC LIMIT 1";
-    $result = $dbConn->executeQuery($query);
-    while($row = $result -> fetch_array()){ 
-        
-    }*/
-
+?>
+<?php
     if(isset($_POST["add_confirm"])){
+        $itmNo = $_POST["itmNo"];
         $itmName = $_POST["itmName"];
         $itmDesc = $_POST["itmDesc"];
         $itmPrice = $_POST["itmPrice"];
 
         if($itmName !=null && $itmDesc !=null && $itmPrice !=null)
         {
-            $status = "Active";
-            $insert_query = "INSERT INTO item (itmName,itmDesc,itmPrice,status)
-            VALUES ('{$itmName}','{$itmDesc}',{$itmPrice},'{$status}');";
-            $insert_result = $dbConn -> executeQuery($insert_query);
+            //$update_query = "INSERT INTO item (itmName,itmDesc,itmPrice,status)
+            //VALUES ('{$itmName}','{$itmDesc}',{$itmPrice},'{$status}');";
+            $update_query = "UPDATE item SET itmName='$itmName',itmDesc='$itmDesc',itmPrice=$itmPrice 
+            WHERE itmNo = $itmNo";
+            $updatet_result = $dbConn -> executeQuery($update_query);
         }
         else{
-            $insert_result = false;
+            $updatet_result = false;
         }
-    
-    if($insert_result){header("location: Inventory_item.php?add_fdt=1");}
-        else{header("location: Inventory_item.php?add_fdt=0");}
-        exit(1);
-        
+
+        if($updatet_result){header("location: Inventory_item.php?up_itm=1");}
+            else{header("location: Inventory_item.php?up_itm=0");}
+            exit(1);
     }
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,24 +66,31 @@
 
         
     <div class="container form-signin mt-auto w-50">
-        <form method="POST" action="Inventory_Item_add.php" class="form-floating" enctype="multipart/form-data">
+        <?php
+                $itmNo = $_GET["itmNo"];
+                $query = "SELECT * FROM item WHERE itmNo = {$itmNo} LIMIT 0,1";
+                $result = $dbConn ->executeQuery($query);
+                $row = $result -> fetch_array();
+            
+        ?>
+        <form method="POST" action="Inventory_item_edit.php" class="form-floating" enctype="multipart/form-data">
             <h2 class="mt-4 mb-3 fw-normal text-bold"><i class="bi bi-pencil-square me-2"></i>Add New Item</h2>
             <p>Enter new item details here</p>
             
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="itmName" placeholder="itmName" name="itmName" required>
+                <input type="text" class="form-control" id="itmName" placeholder="itmName" name="itmName" value="<?php echo $row["itmName"];?>" required>
                 <label for="itmName">Item Name</label>
             </div>
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="itmDesc" placeholder="itmDesc" name="itmDesc" required>
+                <input type="text" class="form-control" id="itmDesc" placeholder="itmDesc" name="itmDesc" value="<?php echo $row["itmDesc"];?>" required>
                 <label for="itmDesc">Item Description</label>
             </div>
             <div class="form-floating mb-2">
-                <input type="number" step="0.25" min="0.00" max="20000" class="form-control" id="itmPrice" placeholder="Price (Rs.)" name="itmPrice" required>
+                <input type="number" step="0.25" min="0.00" max="20000" class="form-control" id="itmPrice" placeholder="Price (Rs.)" name="itmPrice" value="<?php echo $row["itmPrice"];?>" required>
                 <label for="itmPrice">Price (Rs.)</label>
             </div>
-            
-            <button class="w-50 btn btn-warning mb-3 " name="add_confirm" type="submit">Add Item</button>
+            <input type="hidden" name="itmNo" value="<?php echo $row["itmNo"]?>">
+            <button class="w-50 btn btn-warning mb-3 " name="add_confirm" type="submit">Update Item</button>
         </form>
     </div>
     </div>

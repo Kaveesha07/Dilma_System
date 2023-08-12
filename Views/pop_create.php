@@ -6,7 +6,7 @@
     include $db_path.'/DBconnection.php';
     
     //sql query for retrive item to the drop down list
-    $ReadSql = "SELECT itmNo,itmName,itmPrice FROM item";
+    $ReadSql = "SELECT itmNo,itmName,itmPrice FROM item where status ='Active'";
     $resItem = $dbConn->executeQuery($ReadSql);
 
     //sql query for add new POP to database

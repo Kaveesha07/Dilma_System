@@ -20,7 +20,6 @@
         $_SESSION["username"] = $username;
         $_SESSION["shopname"] = $row["directorName"];
         $_SESSION["utype"] = "Administrator";
-        //$_SESSION["type"] = $row["type"];
         header("location: index.php");
     }else{
         ?>

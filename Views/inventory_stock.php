@@ -49,7 +49,7 @@
             if(isset($_GET["update_inv"])){
                 if($_GET["update_inv"]==1){
                     ?>
-            <!-- START SUCCESSFULLY ADD A ITEM -->
+            <!-- message for sucesfully update item -->
             <div class="row row-cols-1 notibar">
                 <div class="col mt-2 ms-2 p-2 bg-success text-white rounded text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -62,9 +62,9 @@
                     <span class="me-2 float-end"><a class="text-decoration-none link-light" href="inventory_stock.php">X</a></span>
                 </div>
             </div>
-            <!-- END SUCCESSFULLY ADD A ITEM -->
+
             <?php }else{ ?>
-            <!-- START FAILED FOOD ADD A ITEM -->
+            <!-- message for failed to  update pop -->
             <div class="row row-cols-1 notibar">
                 <div class="col mt-2 ms-2 p-2 bg-danger text-white rounded text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -76,12 +76,12 @@
                     <span class="me-2 float-end"><a class="text-decoration-none link-light" href="inventory_stock.php">X</a></span>
                 </div>
             </div>
-            <!-- END FAILED ADD A ITEM -->
             <?php }
                 }
             ?>
         </div>
         <div class="mt-5">
+        <!--search button area -->
         <form class="form-floating mb-3" method="GET" action="inventory_stock.php">
                 <div class="row g-2">
                     
@@ -103,14 +103,15 @@
             <div class="pt-2" id="item-table">
 
         <?php
+            //when no search all items retrive
             if(!isset($_GET["search"])){
                 $search_query = "SELECT * FROM inventory;";
             }else{
+                //when search only get exact item
                 $search_fn=$_GET["itemNo"];
                 $search_query = "SELECT * FROM inventory i WHERE itemNo LIKE '%{$search_fn}%';";
             }
             $search_result = $dbConn -> executeQuery($search_query);
-            //$search_result = $dbConn->executeQuery($query);
             $search_numrow = $search_result -> num_rows;
             if($search_numrow == 0){
         ?>
@@ -142,6 +143,7 @@
                 </tr>
             </thead>
             <tbody>
+                <!--show items  from database -->
                 <?php $i=1; while($row = $search_result -> fetch_array()){ ?>
                 <tr>
                     <th><?php echo $i++;?></th>

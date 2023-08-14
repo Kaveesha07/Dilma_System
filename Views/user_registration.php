@@ -9,16 +9,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../views/assets/css/styles.css">
+    <!-- boostarap and fonts import here -->
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../vendor/twbs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="../node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
         * {
             font-family: 'Poppins', sans-serif;
@@ -31,6 +31,7 @@
 <div class="container px-5 py-4">
 <div class="mt-4">
     <div>
+        <!-- import header -->
         <?php include('../Shared/nav_header_reg.php')?>
         
         <a class="nav nav-item text-decoration-none text-muted mb-2 pt-5 mt-5" href="#" onclick="history.back();">
@@ -38,6 +39,7 @@
         </a>
         <div >
             <?php 
+            //registraion check using registraion accept and output message here
             if(isset($_GET["reg_up"])){
                 if($_GET["reg_up"]==1){
                     ?>

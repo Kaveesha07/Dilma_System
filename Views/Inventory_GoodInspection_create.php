@@ -7,7 +7,9 @@
 ?>
 
 <?php
+    //complete inspection clicks
     if(isset($_POST["add_confirm"])){
+        //get details of GRN items
         $UpoNo = $_POST["UpoNo"];
         $AdjstItemNos = $_POST["itmNo"];
         $AdjstItemNames = $_POST["itmName"];
@@ -15,19 +17,22 @@
         $AdjstQtys = $_POST["itmQty"];
         $date =date('Y-m-d');
         $i=0;
+
         foreach ($AdjstItemNos as $AdjstItemNo){
+            //acess one by one get current stock details
             $checkAvailability = "SELECT itemNo,onHandStock,rejectedStock FROM inventory where itemNo ='{$AdjstItemNo}'";
             $resAvailbility = $dbConn->executeQuery($checkAvailability);
             $AdjstitmAdjQty = $AdjstitmAdjQtys[$i];
            
             while($rowAvail = $resAvailbility -> fetch_array())
             {
-            $updateStock = $rowAvail['onHandStock']-$AdjstitmAdjQty;
-            $updateRejectedStock = $rowAvail['onRejectedStock']+$AdjstitmAdjQty;
-            $update_inventory = "UPDATE inventory SET rejectedStock=$updateRejectedStock,approvedStock=$updateStock WHERE itemNo = $AdjstItemNo";
-            $update_result_inventory = $dbConn -> executeQuery($update_inventory);
-            $insert_query = "INSERT INTO rejection (poNo,date,itmNo,itmQty) VALUES ($UpoNo,'$date',$AdjstItemNo,$AdjstitmAdjQty);";
-            $insert_result = $dbConn -> executeQuery($insert_query);
+                //update withh current stock and add to rejection table
+                $updateStock = $rowAvail['onHandStock']-$AdjstitmAdjQty;
+                $updateRejectedStock = $rowAvail['onRejectedStock']+$AdjstitmAdjQty;
+                $update_inventory = "UPDATE inventory SET rejectedStock=$updateRejectedStock,approvedStock=$updateStock WHERE itemNo = $AdjstItemNo";
+                $update_result_inventory = $dbConn -> executeQuery($update_inventory);
+                $insert_query = "INSERT INTO rejection (poNo,date,itmNo,itmQty) VALUES ($UpoNo,'$date',$AdjstItemNo,$AdjstitmAdjQty);";
+                $insert_result = $dbConn -> executeQuery($insert_query);
 
             }
             $i++;

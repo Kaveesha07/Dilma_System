@@ -7,7 +7,9 @@
 ?>
 
 <?php
+    //check make grn clicks
     if(isset($_POST["add_confirm"])){
+        //get values for create new GRN based on PO
         $UpoNo = $_POST["UpoNo"];
         $grnItemNos = $_POST["itmNo"];
         $grnItemNames = $_POST["itmName"];
@@ -16,19 +18,22 @@
         $i=0;
         foreach ($grnItemNos as $grnItemNo){
             
+            //get current stock on each po line item
             $checkAvailability = "SELECT itemNo,onHandStock FROM inventory where itemNo ='{$grnItemNo}'";
             $resAvailbility = $dbConn->executeQuery($checkAvailability);
             $grnStock = $grnQtys[$i];
-        
+            //update if currently has that product in stock
             if($rowAvail = $resAvailbility -> fetch_array())
             {
                 while($rowAvail = $resAvailbility -> fetch_array())
                 {
+                    //update current stock by adding GRN qty
                     $updateStock = $rowAvail['onHandStock']+$grnStock;
                     $update_inventory = "UPDATE inventory SET onHandStock = $updateStock  WHERE itemNo = $grnItemNo";
                     $update_result_inventory = $dbConn -> executeQuery($update_inventory);   
                 }
             }
+            //insert if currently not in inventory
             else{
             $insert_query = "INSERT INTO inventory (poNo,itemNo,onHandStock) VALUES ($UpoNo,$grnItemNo,$grnStock);";
             $insert_result = $dbConn -> executeQuery($insert_query);
@@ -36,6 +41,7 @@
             $i++;
          
         }
+        //update PO 
         if($UpoNo !=null)
         {
             $status="Closed";
@@ -99,6 +105,7 @@
                             <div class="col-4">
                             <?php 
                                 if(isset($_POST["btnSearch"])){
+                                    //search for item that status only Open
                                     $poNo = $_POST["poNo"];
                                     $status="Open";
                                     $po_query = "SELECT * FROM purchaseorder  Where poNo='{$poNo}' AND status='{$status}'";

@@ -1,11 +1,11 @@
 <?php
+    //db connection
      $path = $_SERVER['DOCUMENT_ROOT'];
      $path .= "/Dilma_System";
      $db_path = $path . "/DataAccess";
-     include $db_path.'/DBconnection.php';
+     include $db_path.'/DBconnection.php';  
     
-    
-
+     //check approve button click
     if(isset($_POST["add_confirm"])){
         $UpopNo = $_POST["UpopNo"];
         $poItemNos = $_POST["itmNo"];
@@ -14,17 +14,19 @@
         $poQtys = $_POST["itmQty"];
         $totalamount = $_POST["totalamount"];
         
-
         if($UpopNo !=null)
         {
+            //update query in pop table
             $status="Closed";
             $update_query = "UPDATE pop SET status = '{$status}' WHERE popNo = '{$UpopNo}'";
             $update_result = $dbConn -> executeQuery($update_query);
+            //insert query in po table to create new po
             $date =date('Y-m-d');
             $poStatus="Open";
             $insert_query = "INSERT INTO purchaseorder (popNo,date,status,total) VALUES ($UpopNo,'$date','$poStatus',$totalamount);";
             $insert_result = $dbConn -> executeQuery($insert_query);
 
+            //get created Po number to enter poLines
             $ReadSql5 = "SELECT poNo FROM purchaseorder where popNo = '{$UpopNo}'";
             $resPOList = $dbConn->executeQuery($ReadSql5);
 
@@ -34,11 +36,10 @@
             }}
             $i=0;
             foreach ($poItemNos as $poItemNo){
- 
+                //Add po lines
                 $poItemName = $poItemNames[$i];
                 $poItemPrice = $poItemPrices[$i];
                 $poQty = $poQtys[$i];
-
                 $insert_query2 = "INSERT INTO polines (poNo,popNo,itmNo,itmQty) VALUES ($poNo,$UpopNo,$poItemNo,$poQty);";
                 $insert_result = $dbConn -> executeQuery($insert_query2);
                 $i++; 
@@ -50,7 +51,7 @@
             $update_result = false;
             $insert_result=false;
         }
-    
+    //check the insert and update
     if($update_result && $insert_result){header("location: pop_view.php?update_pop=1");}
         else{header("location: pop_view.php?update_pop=0");}
         exit(1);
@@ -59,36 +60,15 @@
 
 ?>
 
-<?php
- 
-   
+<?php 
     $popNo = $_GET["popNo"];
 
-    //$pop_query = "SELECT * FROM purchaseorder WHERE popNo = '{$popNo}' Limit 1";
-    //$pop_arr = $dbConn->executeQuery($pop_query);
-    
-    //$orh_id = $_GET["orh_id"];
-    //$pop_query = "SELECT * FROM pop Where popNo='{$popNo}'";
-    //$pop_result = $dbConn->executeQuery($pop_query);
-    //$pop_arr = $pop_result->fetch_array();
-
-    //$ReadSql5 = "SELECT o.order_date as odate,c.name as cname,ct.qty as cqty FROM orders as o ,customer as c ,cart as ct where c.id=ct.customer_id AND c.id=o.customer_id";
-    //$res5 = $dbConn->executeQuery($ReadSql5);
-  
-
+    //retrive existing po value along with according to po number
     $pop_query = "SELECT l.popNo as lpopNo, l.itmNo as itmNo, l.itmQty as itmQty, p.popNo as popNo, p.popDate as popDate, p.status as status,p.totalamount as totalamount
     FROM popLines as l,pop as p WHERE l.popNo=p.popNo AND p.popNo=$popNo";
     $pop_result = $dbConn->executeQuery($pop_query);
     $pop_result2 = $dbConn->executeQuery($pop_query);
     $pop_arr = $pop_result->fetch_array();
-    /*$pop_result = $dbConn -> executeQuery($pop_query);
-    $Postatus="";
-    while($row = $pop_result -> fetch_array()){
-        $popNo = $row['popNo'];
-        $Postatus=$row['status'];
-    }*/
-
-    
  
 ?>
 
@@ -177,7 +157,7 @@
                     <tbody id="pppOrderItems">
                     <?php $i=0; while($row = $pop_result2 -> fetch_array()){ ?>
                     <tr>
-
+                        <!--Show current polines add into input as array -->
                         <input type="hidden" name="itmNo[]" value="<?php echo $row["itmNo"];?>">
                         <td><?php echo $row["itmNo"];?></td>
                         <?php 
@@ -194,8 +174,6 @@
                         <td><?php echo $row["itmQty"];?></td>
                     </tr>
                     <?php } ?>
-               
-                   
         </table>
     </div>
     <div class="flex mt-5">

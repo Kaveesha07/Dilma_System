@@ -186,7 +186,6 @@
         }
         function updateTotalPrice(totalAmount) {
 
-
             // Update the total in the span with name="itmTotal"
             document.querySelector('span[name="itmTotal"]').textContent = totalAmount.toFixed(2);
             document.getElementById('totalAmount').value = totalAmount;

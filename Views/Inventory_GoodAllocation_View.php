@@ -42,7 +42,7 @@
             if(isset($_GET["add_allocation"])){
                 if($_GET["add_allocation"]==1){
                     ?>
-            <!-- START SUCCESSFULLY ADD A ITEM -->
+            <!-- message for sucesfully add allocation -->
             <div class="row row-cols-1 notibar">
                 <div class="col mt-2 ms-2 p-2 bg-success text-white rounded text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -55,9 +55,9 @@
                     <span class="me-2 float-end"><a class="text-decoration-none link-light" href="inventory_stock.php">X</a></span>
                 </div>
             </div>
-            <!-- END SUCCESSFULLY ADD A ITEM -->
+                    
             <?php }else{ ?>
-            <!-- START FAILED FOOD ADD A ITEM -->
+                <!-- message for faild to add item -->
             <div class="row row-cols-1 notibar">
                 <div class="col mt-2 ms-2 p-2 bg-danger text-white rounded text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -69,7 +69,7 @@
                     <span class="me-2 float-end"><a class="text-decoration-none link-light" href="inventory_stock.php">X</a></span>
                 </div>
             </div>
-            <!-- END FAILED ADD A ITEM -->
+
             <?php }
                 }
             ?>
@@ -102,7 +102,6 @@
                 FROM sales_rep as s, allocation as a,item as i Where s.saleRepNo=a.saleRepNo AND i.itmNo=a.itmNo AND salesRepName LIKE '%{$search_fn}%';";
             }
             $search_result = $dbConn -> executeQuery($search_query);
-            //$search_result = $dbConn->executeQuery($query);
             $search_numrow = $search_result -> num_rows;
             if($search_numrow == 0){
         ?>
@@ -152,8 +151,7 @@
             $search_result -> free_result();
         ?>
         </div>
-        </div>
-        
+        </div>   
     
     </div>
     <div class="flex pt-5 mt-5">

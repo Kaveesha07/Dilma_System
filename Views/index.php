@@ -6,21 +6,28 @@
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
     
+    //count values for top cards
+    //open po count 
     $ReadSql = "SELECT count(*) as count FROM purchaseorder Where status ='Open'";
     $resPO = $dbConn->executeQuery($ReadSql);
 
+    //inventory item count
     $ReadSql2 = "SELECT count(*) as count FROM item";
     $resItem = $dbConn->executeQuery($ReadSql2);
 
+    //allocation count
     $ReadSql3 = "SELECT sum(itmQty) as count FROM allocation where itmQty>0";
     $resAllocated = $dbConn->executeQuery($ReadSql3);
 
+    //current rejected item count
     $ReadSql4 = "SELECT sum(rejectedStock) as count FROM inventory where rejectedStock>0";
     $resRejected = $dbConn->executeQuery($ReadSql4);
 
+    //current purchase orders(not count)
     $ReadSql5 = "SELECT *  FROM purchaseorder ORDER BY date DESC LIMIT 20";
     $resPOList = $dbConn->executeQuery($ReadSql5);
     
+    //our sales person details
     $ReadSql6 = "SELECT salesRepName FROM sales_rep ";
     $resSalePList = $dbConn->executeQuery($ReadSql6);
 
@@ -225,7 +232,6 @@ body {
 }
 
 
-/* ====================== Responsive Design ========================== */
 @media (max-width: 991px) {
   .navigation {
     left: -300px;
@@ -283,7 +289,7 @@ body {
    
 <div class="container mt-5">     
     <div class="pt-5">
-            <!-- ======================= Cards ================== -->
+
             <div class="cardBox">
             <a  href="purchaseOrder_View.php " style="text-decoration: none; color: black;" >
                 <div class="card text-center">
@@ -356,8 +362,6 @@ body {
             </a>
             </div>
 
-
-            <!-- ================ Purchase Order Details List ================= -->
             <div class="details">
                 <div class="recentOrders p-5">
                     <div class="cardHeader">
@@ -427,8 +431,7 @@ body {
         </div>
     </div>
 </body>
-    
-    <!-- =========== Scripts =========  -->
+
     <script src="assets/js/main.js"></script>
   <div class="flex">
     <?php include('../Shared/footer.php')?>

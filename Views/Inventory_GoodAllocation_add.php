@@ -20,18 +20,16 @@
     <?php 
         if($aDate !=null && $saleRepNo !=null && $aitmNos!==null && $aitmQtys!==null )
         {
-            
-            
             $i=0;
             foreach ($aitmNos as $aitmNo){
- 
+                //insert new allocation
                 $aitmQty = $aitmQtys[$i];
                 $insert_query = "INSERT INTO allocation (saleRepNo,date,itmNo,itmQty) VALUES ($saleRepNo,'$aDate',$aitmNo,$aitmQty);";
                 $insert_result = $dbConn -> executeQuery($insert_query);
-
+                //get current stock
                 $checkAvailability = "SELECT itemNo,approvedStock FROM inventory where itemNo ='{$aitmNo}' ";
                 $resAvailbility = $dbConn->executeQuery($checkAvailability);
-            
+                //uodate current stock
                 while($rowAvail = $resAvailbility -> fetch_array())
                     {
                         $updateStock = $rowAvail['approvedStock']-$aitmQty;
@@ -208,9 +206,6 @@
         row.remove();
         //<button class="btn btn-danger" onclick="removeItem(this)">Remove</button>
         }
-
-   
-
         //add item price according to item selected
         $(document).ready(function () {
         // Event handler for the dropdown change event

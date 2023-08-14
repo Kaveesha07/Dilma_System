@@ -7,6 +7,7 @@
 
 ?>
 <?php
+    //check update button click
     if(isset($_POST["add_confirm"])){
         $itmNo = $_POST["itmNo"];
         $itmName = $_POST["itmName"];
@@ -15,8 +16,7 @@
 
         if($itmName !=null && $itmDesc !=null && $itmPrice !=null)
         {
-            //$update_query = "INSERT INTO item (itmName,itmDesc,itmPrice,status)
-            //VALUES ('{$itmName}','{$itmDesc}',{$itmPrice},'{$status}');";
+            //update item tab;e
             $update_query = "UPDATE item SET itmName='$itmName',itmDesc='$itmDesc',itmPrice=$itmPrice 
             WHERE itmNo = $itmNo";
             $updatet_result = $dbConn -> executeQuery($update_query);
@@ -31,7 +31,6 @@
     }
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,6 +66,7 @@
         
     <div class="container form-signin mt-auto w-50">
         <?php
+                //get item details send itmNo
                 $itmNo = $_GET["itmNo"];
                 $query = "SELECT * FROM item WHERE itmNo = {$itmNo} LIMIT 0,1";
                 $result = $dbConn ->executeQuery($query);

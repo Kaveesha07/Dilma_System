@@ -7,9 +7,6 @@
     include $db_path.'/DBconnection.php';
 
     $itmNo = $_GET["itmNo"];
-    //DISABLE FOOD ITEM INSTEAD OF DELETE IT
-    //$delete_query = "DELETE FROM item WHERE itmNo = '{$itmNo}';";
-    //$delete_result = $dbConn -> executeQuery($delete_query);
 
     $status="Inactive";
     $update_query = "UPDATE item SET status = '{$status}' WHERE itmNo = '{$itmNo}'";

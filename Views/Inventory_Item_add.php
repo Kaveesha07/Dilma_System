@@ -5,11 +5,6 @@
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
 
-    /*$query = "SELECT itmNo FROM item ORDER BY itmNo DESC LIMIT 1";
-    $result = $dbConn->executeQuery($query);
-    while($row = $result -> fetch_array()){ 
-        
-    }*/
 
     if(isset($_POST["add_confirm"])){
         $itmName = $_POST["itmName"];
@@ -18,6 +13,7 @@
 
         if($itmName !=null && $itmDesc !=null && $itmPrice !=null)
         {
+            //insert new item
             $status = "Active";
             $insert_query = "INSERT INTO item (itmName,itmDesc,itmPrice,status)
             VALUES ('{$itmName}','{$itmDesc}',{$itmPrice},'{$status}');";

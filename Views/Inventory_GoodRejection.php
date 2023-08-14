@@ -5,6 +5,7 @@
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
     
+    //get only the rejected items
     $query = "SELECT i.itemNo as itemNo,i.rejectedStock as rejectedStock,im.itmName as itmName,i.poNo as poNo  
     FROM inventory i,item as im where im.itmNo=i.itemNo AND rejectedStock>0";
     $res = $dbConn->executeQuery($query);

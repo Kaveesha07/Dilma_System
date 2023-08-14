@@ -4,10 +4,7 @@
     $path .= "/Dilma_System";
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
-    
-    //$query = "SELECT *  FROM item";
-    //$search_result = $dbConn->executeQuery($query);
-    
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +45,7 @@
             if(isset($_GET["add_pop"])){
                 if($_GET["add_pop"]==1){
                     ?>
-            <!-- START SUCCESSFULLY ADD A NEW POP -->
+             <!-- message for sucesfully add pop -->
             <div class="row row-cols-1 notibar">
                 <div class="col mt-2 ms-2 p-2 bg-success text-white rounded text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -61,9 +58,9 @@
                     <span class="me-2 float-end"><a class="text-decoration-none link-light" href="pop_view.php.">X</a></span>
                 </div>
             </div>
-            <!-- END SUCCESSFULLY ADD A NEW POP -->
+
             <?php }else{ ?>
-            <!-- START FAILED FOOD ADD A NEW POP -->
+            <!-- message for faild to add pop -->
             <div class="row row-cols-1 notibar">
                 <div class="col mt-2 ms-2 p-2 bg-danger text-white rounded text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -75,7 +72,6 @@
                     <span class="me-2 float-end"><a class="text-decoration-none link-light" href="pop_view.php">X</a></span>
                 </div>
             </div>
-            <!-- END FAILED ADD A ITEM -->
             <?php }
                 }
             }
@@ -86,7 +82,7 @@
             if(isset($_GET["update_pop"])){
                 if($_GET["update_pop"]==1){
                     ?>
-            <!-- START SUCCESSFULLY ADD A ITEM -->
+            <!-- message for sucesfully update pop -->
             <div class="row row-cols-1 notibar">
                 <div class="col mt-2 ms-2 p-2 bg-success text-white rounded text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -99,9 +95,9 @@
                     <span class="me-2 float-end"><a class="text-decoration-none link-light" href="pop_view.php">X</a></span>
                 </div>
             </div>
-            <!-- END SUCCESSFULLY ADD A ITEM -->
+
             <?php }else{ ?>
-            <!-- START FAILED FOOD ADD A ITEM -->
+            <!-- message for faild to update pop -->
             <div class="row row-cols-1 notibar">
                 <div class="col mt-2 ms-2 p-2 bg-danger text-white rounded text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -113,7 +109,7 @@
                     <span class="me-2 float-end"><a class="text-decoration-none link-light" href="pop_view.php">X</a></span>
                 </div>
             </div>
-            <!-- END FAILED ADD A ITEM -->
+ 
             <?php }
                 }
             ?>
@@ -123,7 +119,7 @@
                 if(isset($_GET["d_itm"])){
                     if($_GET["d_itm"]==1){
                         ?>
-                <!-- START SUCCESSFULLY DELETE Item -->
+                <!-- message for sucesfully  delete pop -->
                 <div class="row row-cols-1 notibar">
                     <div class="col mt-2 ms-2 p-2 bg-success text-white rounded text-start">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -136,9 +132,8 @@
                         <span class="me-2 float-end"><a class="text-decoration-none link-light" href="pop_view.php">X</a></span>
                     </div>
                 </div>
-                <!-- END SUCCESSFULLY DELETE Item -->
                 <?php }else{ ?>
-                <!-- START FAILED DELETE Item -->
+                <!-- message for faild to delete pop -->
                 <div class="row row-cols-1 notibar">
                     <div class="col mt-2 ms-2 p-2 bg-danger text-white rounded text-start">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -173,14 +168,16 @@
             <div class="pt-2" id="pop-table">
 
         <?php
+            
             if(!isset($_GET["search"])){
+                //when no search all items retrive
                 $search_query = "SELECT * FROM pop Where status != 'Inactive';";
             }else{
+                //when search only get exact item
                 $search_fn=$_GET["popNo"];
                 $search_query = "SELECT * FROM pop i WHERE popNo LIKE '%{$search_fn}%' AND status != 'Inactive';";
             }
             $search_result = $dbConn -> executeQuery($search_query);
-            //$search_result = $dbConn->executeQuery($query);
             $search_numrow = $search_result -> num_rows;
             if($search_numrow == 0){
         ?>
@@ -211,6 +208,7 @@
                 </tr>
             </thead>
             <tbody>
+                <!--show pop values from database -->
                 <?php $i=1; while($row = $search_result -> fetch_array()){ ?>
                 <tr>
                     <th><?php echo $i++;?></th>

@@ -4,37 +4,17 @@
     $path .= "/Dilma_System";
     $db_path = $path . "/DataAccess";
     include $db_path.'/DBconnection.php';
-    //$poNo="";
-    $poNo = $_GET["poNo"];
-    //$pop_query = "SELECT * FROM purchaseorder WHERE popNo = '{$popNo}' Limit 1";
-    //$pop_arr = $dbConn->executeQuery($pop_query);
-    
-    //$orh_id = $_GET["orh_id"];
-    //$pop_query = "SELECT * FROM purchaseorder Where poNo='{$poNo}'";
-    //$pop_result = $dbConn->executeQuery($pop_query);
-    //$pop_arr = $pop_result->fetch_array();
 
+    //pass through view button in purchase order view
+    $poNo = $_GET["poNo"];
+
+    //get purchaseOrder details with poline details
     $po_query = "SELECT l.poNo as lpopNo,l.poNo as lpopNo, l.itmNo as itmNo, l.itmQty as itmQty, p.poNo as poNo,p.popNo as popNo, p.date as pdate, p.status as status,p.total as total
     FROM polines as l,purchaseorder as p WHERE l.poNo=p.poNo AND p.poNo=$poNo";
 
     $po_result = $dbConn->executeQuery($po_query);
     $po_result2 = $dbConn->executeQuery($po_query);
     $po_arr = $po_result->fetch_array();
-    
-    //Get PO Items according to the po number
-    $query = "SELECT *  FROM poLines WHERE poNo='{$poNo}'";
-    $res = $dbConn->executeQuery($query);
-
-    /*$pop_result = $dbConn -> executeQuery($pop_query);
-    $Postatus="";
-    while($row = $pop_result -> fetch_array()){
-        $popNo = $row['popNo'];
-        $Postatus=$row['status'];
-    }*/
-    //Approve PO
-
-    
- 
 ?>
 
 
@@ -81,6 +61,7 @@
             <div class="col-10">
             <li class="list-item mb-2">
                 <?php 
+                //only open po available for approve
                 if($po_arr["status"]=="Open"){ ?>
                     <h5>Current Status: <span class="fw-bold badge bg-info text-dark">Open</span></h5>
                     <?php }else if($po_arr["status"]=="Closed" ){ ?>
